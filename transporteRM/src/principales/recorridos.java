@@ -12,17 +12,15 @@ package principales;
 public class recorridos {
     
     int id_recorrido;
-    String origen;
-    String destino;
+    String recorrido;
     String km_recorridos;
 
     public recorridos() {
     }
 
-    public recorridos(int id_recorrido, String origen, String destino, String km_recorridos) {
+    public recorridos(int id_recorrido, String recorrido, String km_recorridos) {
         this.id_recorrido = id_recorrido;
-        this.origen = origen;
-        this.destino = destino;
+        this.recorrido = recorrido;
         this.km_recorridos = km_recorridos;
     }
 
@@ -34,20 +32,12 @@ public class recorridos {
         this.id_recorrido = id_recorrido;
     }
 
-    public String getOrigen() {
-        return origen;
+    public String getRecorrido() {
+        return recorrido;
     }
 
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
-    public void setDestino(String destino) {
-        this.destino = destino;
+    public void setRecorrido(String recorrido) {
+        this.recorrido = recorrido;
     }
 
     public String getKm_recorridos() {

@@ -12,15 +12,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import metodos.recorridosMysql;
+import principales.clientes;
 import principales.recorridos;
 
 /**
  *
  * @author user
  */
-public class Recorridos extends javax.swing.JFrame {
+public final class Recorridos extends javax.swing.JFrame {
 
     //DefaultTableModel model;
     
@@ -40,9 +42,9 @@ public class Recorridos extends javax.swing.JFrame {
     public void listarRecorridos() {
         recorrido = dbRecorridos.ListarRecorridos();
         DefaultTableModel tb = (DefaultTableModel) tbRecorridos.getModel();
-        for (recorridos re : recorrido) {
-            tb.addRow(new Object[]{re.getId_recorrido(), re.getOrigen(), re.getDestino(), re.getKm_recorridos()});
-        }
+        recorrido.forEach((re) -> {
+            tb.addRow(new Object[]{re.getId_recorrido(), re.getRecorrido(), re.getKm_recorridos()});
+        });
     }
 
     public void LimpiarRecorridos() {
@@ -134,6 +136,8 @@ public class Recorridos extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtKm = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbRecorridos = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
@@ -161,53 +165,70 @@ public class Recorridos extends javax.swing.JFrame {
         txtOrigen.setBounds(80, 20, 150, 30);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("DESTINO");
+        jLabel3.setText("KM");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(250, 30, 48, 14);
+        jLabel3.setBounds(20, 110, 48, 14);
         jPanel2.add(txtDestino);
-        txtDestino.setBounds(310, 20, 160, 30);
+        txtDestino.setBounds(80, 60, 150, 30);
 
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 0));
         jButton2.setText("REGISTRAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton2);
-        jButton2.setBounds(20, 60, 110, 30);
+        jButton2.setBounds(310, 20, 110, 30);
 
         jButton3.setBackground(new java.awt.Color(0, 0, 0));
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 0));
         jButton3.setText("ACTUALIZAR");
         jPanel2.add(jButton3);
-        jButton3.setBounds(150, 60, 110, 30);
+        jButton3.setBounds(310, 60, 110, 30);
 
         jButton4.setBackground(new java.awt.Color(0, 0, 0));
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 0));
         jButton4.setText("ELIMINAR");
         jPanel2.add(jButton4);
-        jButton4.setBounds(280, 60, 110, 30);
+        jButton4.setBounds(310, 100, 110, 30);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("DESTINO");
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(20, 70, 48, 14);
+        jPanel2.add(txtKm);
+        txtKm.setBounds(80, 100, 150, 30);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(20, 70, 510, 100);
+        jPanel2.setBounds(50, 60, 510, 150);
 
         tbRecorridos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "ORIGEN", "DESTINO", "KM RECORRIDOS"
+                "ID", "RECORRIDO", "KM RECORRIDOS"
             }
         ));
         jScrollPane1.setViewportView(tbRecorridos);
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(20, 190, 590, 240);
+        jScrollPane1.setBounds(20, 270, 590, 160);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton1.setText("...");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton1);
-        jButton1.setBounds(540, 70, 30, 23);
+        jButton1.setBounds(570, 70, 30, 23);
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(jSeparator1);
@@ -230,6 +251,39 @@ public class Recorridos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        try {
+                String rec = txtOrigen.getText()+" - "+txtDestino.getText();
+                recorridos re = new recorridos();
+                re.setRecorrido(rec.toUpperCase());
+                re.setKm_recorridos(txtKm.getText().toUpperCase());
+ 
+                dbRecorridos.insertarRecorrido(re);
+                
+                LimpiarRecorridos();
+                listarRecorridos();
+                
+                txtOrigen.setText("");
+                txtDestino.setText("");
+                txtKm.setText("");
+                txtOrigen.requestFocus();
+        
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Er"+e);
+            }
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        LimpiarRecorridos();
+        listarRecorridos();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -275,12 +329,14 @@ public class Recorridos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tbRecorridos;
     private javax.swing.JTextField txtDestino;
+    private javax.swing.JTextField txtKm;
     private javax.swing.JTextField txtOrigen;
     // End of variables declaration//GEN-END:variables
 }

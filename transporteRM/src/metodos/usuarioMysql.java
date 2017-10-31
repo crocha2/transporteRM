@@ -41,6 +41,7 @@ public class usuarioMysql {
                 usuario.add(usu);
             }
             cn.close();
+            st.close();
         } catch (SQLException ex) {
            JOptionPane.showMessageDialog(null, "Error al listar:\n"+ex.getMessage());
         }

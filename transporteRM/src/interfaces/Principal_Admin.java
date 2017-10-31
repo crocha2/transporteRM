@@ -84,6 +84,7 @@ public class Principal_Admin extends javax.swing.JFrame {
 
         jMenu6.setText("Clientes");
 
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem4.setText("Registrar");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +202,10 @@ public class Principal_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+
+        Nuevo_Cliente obj = new Nuevo_Cliente();
+        obj.setVisible(true);
+
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 

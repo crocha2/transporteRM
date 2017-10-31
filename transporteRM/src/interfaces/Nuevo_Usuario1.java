@@ -59,9 +59,10 @@ public class Nuevo_Usuario1 extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(10, 10, 190, 30);
 
+        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(jSeparator1);
-        jSeparator1.setBounds(10, 40, 200, 10);
+        jSeparator1.setBounds(10, 40, 240, 10);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
