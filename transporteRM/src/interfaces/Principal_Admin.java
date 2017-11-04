@@ -101,6 +101,11 @@ public class Principal_Admin extends javax.swing.JFrame {
         jMenu6.add(jMenuItem4);
 
         jMenuItem6.setText("Gestionar");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jMenu6.add(jMenuItem6);
 
         jMenu2.add(jMenu6);
@@ -239,6 +244,14 @@ public class Principal_Admin extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+
+        Tabla_Clientes obj = new Tabla_Clientes();
+        obj.setVisible(true);
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments

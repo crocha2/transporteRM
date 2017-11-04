@@ -79,8 +79,8 @@ public class clientesMysql {
     public void EliminarClientes(clientes cliente) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
-            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("DELETE FROM clientes WHERE nombre=?");
-            pst.setString(1, cliente.getNombre());
+            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("DELETE FROM clientes WHERE id_cliente=?");
+            pst.setInt(1, cliente.getId_cliente());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Eliminado exitosamente");
             cn.close();
@@ -103,6 +103,7 @@ public class clientesMysql {
             pst.setString(7, cliente.getContacto());
             pst.setString(8, cliente.getEmail_contacto());
             pst.setString(9, cliente.getTelefono_contacto());
+            pst.setInt(10, cliente.getId_cliente());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Editado exitosamente");
             cn.close();

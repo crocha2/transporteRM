@@ -74,7 +74,7 @@ public class Nuevo_Propietario extends javax.swing.JFrame {
         lblNit7 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 

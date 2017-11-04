@@ -80,9 +80,9 @@ public class Nuevo_Cliente extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel2.setText("Clientes");
+        jLabel2.setText("CLIENTES");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 0, 170, 50);
+        jLabel2.setBounds(20, 0, 230, 50);
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
@@ -102,19 +102,19 @@ public class Nuevo_Cliente extends javax.swing.JFrame {
         cmbTipoPersona.setBounds(30, 40, 190, 30);
 
         lblCedula.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblCedula.setText("Cedula");
+        lblCedula.setText("CEDULA");
         jPanel2.add(lblCedula);
         lblCedula.setBounds(260, 20, 100, 14);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel7.setText("Tipo De Persona");
+        jLabel7.setText("TIPO DE PERSONA");
         jPanel2.add(jLabel7);
         jLabel7.setBounds(30, 20, 100, 14);
         jPanel2.add(txtNit);
         txtNit.setBounds(260, 40, 210, 30);
 
         lblNit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit.setText("Nit");
+        lblNit.setText("NIT");
         jPanel2.add(lblNit);
         lblNit.setBounds(260, 20, 30, 14);
 
@@ -125,21 +125,21 @@ public class Nuevo_Cliente extends javax.swing.JFrame {
         jPanel3.setLayout(null);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel8.setText("Nombre Del Contacto");
+        jLabel8.setText("NOMBRE DEL CONTACTO");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(30, 20, 150, 14);
         jPanel3.add(txtContacto);
         txtContacto.setBounds(30, 40, 210, 30);
 
         lblNit1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit1.setText("E-mail");
+        lblNit1.setText("E-MAIL");
         jPanel3.add(lblNit1);
         lblNit1.setBounds(260, 20, 100, 14);
         jPanel3.add(txtEmail);
         txtEmail.setBounds(260, 40, 210, 30);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel9.setText("Telefono");
+        jLabel9.setText("TELEFONO");
         jPanel3.add(jLabel9);
         jLabel9.setBounds(30, 80, 100, 14);
         jPanel3.add(txtTelefono);
@@ -152,26 +152,26 @@ public class Nuevo_Cliente extends javax.swing.JFrame {
         jPanel4.setLayout(null);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel10.setText("Nombre");
+        jLabel10.setText("NOMBRE");
         jPanel4.add(jLabel10);
         jLabel10.setBounds(30, 20, 100, 14);
         jPanel4.add(txtNombre);
         txtNombre.setBounds(30, 40, 210, 30);
 
         lblNit3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit3.setText("Departamento");
+        lblNit3.setText("DEPARTAMENTO");
         jPanel4.add(lblNit3);
         lblNit3.setBounds(260, 20, 100, 14);
         jPanel4.add(txtDepartamento);
         txtDepartamento.setBounds(260, 40, 210, 30);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel11.setText("Municipio");
+        jLabel11.setText("MUNICIPIO");
         jPanel4.add(jLabel11);
         jLabel11.setBounds(30, 80, 100, 14);
 
         lblNit4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit4.setText("Direccion");
+        lblNit4.setText("DIRECCION");
         jPanel4.add(lblNit4);
         lblNit4.setBounds(260, 80, 100, 14);
         jPanel4.add(txtMunicipio);

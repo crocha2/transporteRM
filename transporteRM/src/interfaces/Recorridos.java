@@ -214,7 +214,7 @@ public final class Recorridos extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(0, 0, 0));
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 0));
-        jButton3.setText("ACTUALIZAR");
+        jButton3.setText("EDITAR");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -295,12 +295,12 @@ public final class Recorridos extends javax.swing.JFrame {
             }
         });
         jPanel3.add(btnBuscar);
-        btnBuscar.setBounds(170, 10, 90, 30);
+        btnBuscar.setBounds(250, 10, 90, 30);
         jPanel3.add(txtBuscar);
-        txtBuscar.setBounds(10, 10, 150, 30);
+        txtBuscar.setBounds(10, 10, 230, 30);
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(50, 250, 270, 50);
+        jPanel3.setBounds(50, 250, 350, 50);
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo2.jpg"))); // NOI18N
         jPanel1.add(fondo);
