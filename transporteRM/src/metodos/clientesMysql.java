@@ -6,7 +6,6 @@
 package metodos;
 
 //import clasesPrincipales.clientes;
-import principales.usuarios;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,7 +40,6 @@ public class clientesMysql {
                 cli.setNombre(rs.getString("nombre"));
                 cli.setDepartamento(rs.getString("departamento"));
                 cli.setMunicipio(rs.getString("municipio"));
-                
                 cli.setDireccion(rs.getString("direccion"));
                 cli.setContacto(rs.getString("contacto"));
                 cli.setEmail_contacto(rs.getString("email_contacto"));
@@ -60,7 +58,7 @@ public class clientesMysql {
     public void insertarClientes(clientes cliente) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
-            PreparedStatement pst = cn.prepareStatement("INSERT INTO clientes(nit, tipo_persona, nombre, departamento, municipio, direccion, contacto, email_contacto, telefono_contacto) VALUES ()");
+            PreparedStatement pst = cn.prepareStatement("INSERT INTO clientes(nit, tipo_persona, nombre, departamento, municipio, direccion, contacto, email_contacto, telefono_contacto) VALUES (?,?,?,?,?,?,?,?,?)");
             pst.setString(1, cliente.getNit());
             pst.setString(2, cliente.getTipo_persona());
             pst.setString(3, cliente.getNombre());

@@ -252,7 +252,7 @@ public class Nuevo_Cliente extends javax.swing.JFrame {
                 dispose();
         
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e);
+                JOptionPane.showMessageDialog(this, e.getMessage());
             }
         
         // TODO add your handling code here:

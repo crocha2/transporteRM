@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import principales.propietarios;
+
 /**
  *
  * @author user
@@ -75,6 +77,11 @@ public class Principal_Admin extends javax.swing.JFrame {
         menuPropietarios.setText("Propietarios");
 
         jMenuItem3.setText("Registrar");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         menuPropietarios.add(jMenuItem3);
 
         jMenuItem5.setText("Gestionar");
@@ -224,6 +231,14 @@ public class Principal_Admin extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+
+        Nuevo_Propietario obj = new Nuevo_Propietario();
+        obj.setVisible(true);
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
