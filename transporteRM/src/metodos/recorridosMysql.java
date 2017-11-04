@@ -12,7 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import principales.clientes;
 import principales.recorridos;
 import principales.usuarios;
 
@@ -40,6 +43,7 @@ public class recorridosMysql {
                 recorrido.add(re);      
             }
             cn.close();
+            st.close();
             rs.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error en listado:\n"+ex.getMessage());
@@ -56,8 +60,42 @@ public class recorridosMysql {
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Guardado exitosamente");
             cn.close();
+            pst.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al insertar:\n"+ex.getMessage());
+        }
+    }
+    
+    public void EditarRecorrido(recorridos recorrido) {
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("UPDATE recorridos SET recorrido=?,km_recorridos=? WHERE id_recorrido = ?");
+            pst.setString(1, recorrido.getRecorrido());
+            pst.setString(2, recorrido.getKm_recorridos());
+            pst.setInt(3, recorrido.getId_recorrido());
+            
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Editado exitosamente");
+            cn.close();
+            pst.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(clientesMysql.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al editar:\n"+ex.getMessage());
+        }
+
+    }
+    
+    public void EliminarRecorrido(recorridos recorrido) {
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("DELETE FROM recorridos WHERE id_recorrido = ?");
+            pst.setInt(1, recorrido.getId_recorrido());
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Eliminado exitosamente");
+            cn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(recorridosMysql.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al eliminar:\n"+ex.getMessage());
         }
     }
     
