@@ -48,6 +48,7 @@ public class clientesMysql {
             }
             cn.close();
             st.close();
+            rs.close();
         } catch (SQLException ex) {
            JOptionPane.showMessageDialog(null, "Error al listar:\n"+ex.getMessage());
         }
@@ -71,6 +72,7 @@ public class clientesMysql {
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Guardado exitosamente");
             cn.close();
+            pst.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al insertar:\n"+ex.getMessage());
         }
@@ -84,6 +86,7 @@ public class clientesMysql {
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Eliminado exitosamente");
             cn.close();
+            pst.close();
         } catch (SQLException ex) {
             //Logger.getLogger(clienteMySql.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al eliminar:\n"+ex.getMessage());
@@ -107,6 +110,7 @@ public class clientesMysql {
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Editado exitosamente");
             cn.close();
+            pst.close();
         } catch (SQLException ex) {
             Logger.getLogger(clientesMysql.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al editar:\n"+ex.getMessage());

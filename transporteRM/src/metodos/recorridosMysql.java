@@ -93,6 +93,7 @@ public class recorridosMysql {
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Eliminado exitosamente");
             cn.close();
+            pst.close();
         } catch (SQLException ex) {
             Logger.getLogger(recorridosMysql.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al eliminar:\n"+ex.getMessage());

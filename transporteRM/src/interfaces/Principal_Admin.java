@@ -40,6 +40,9 @@ public class Principal_Admin extends javax.swing.JFrame {
         menuPropietarios = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu10 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -88,6 +91,16 @@ public class Principal_Admin extends javax.swing.JFrame {
         menuPropietarios.add(jMenuItem5);
 
         jMenu2.add(menuPropietarios);
+
+        jMenu10.setText("Conductores");
+
+        jMenuItem10.setText("Registrar Conductor");
+        jMenu10.add(jMenuItem10);
+
+        jMenuItem17.setText("Gestionar Conductor");
+        jMenu10.add(jMenuItem17);
+
+        jMenu2.add(jMenu10);
 
         jMenu6.setText("Clientes");
 
@@ -292,6 +305,7 @@ public class Principal_Admin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
@@ -302,12 +316,14 @@ public class Principal_Admin extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
