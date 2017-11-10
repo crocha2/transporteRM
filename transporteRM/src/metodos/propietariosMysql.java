@@ -41,7 +41,6 @@ public class propietariosMysql {
                 pro.setDepartamento(rs.getString("departamento"));
                 pro.setMunicipio(rs.getString("municipio"));
                 pro.setDireccion(rs.getString("direccion"));
-                
                 pro.setFecha_ingreso(rs.getString("fecha_ingreso"));
                 pro.setEmail(rs.getString("email"));
                 pro.setTelefono(rs.getString("telefono"));

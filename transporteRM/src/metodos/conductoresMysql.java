@@ -32,7 +32,7 @@ public class conductoresMysql {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM conductores ORDER BY nombre ASC");
+            ResultSet rs = st.executeQuery("SELECT * FROM conductores WHERE estado = 'ACTIVO' ORDER BY nombre ASC");
             
             while (rs.next()) {
                 conductores con = new  conductores();

@@ -22,7 +22,7 @@ public class Tabla_Conductores extends javax.swing.JFrame {
 
     ArrayList<conductores> conductor;
     conductoresMysql db = new conductoresMysql();
-    
+
     /**
      * Creates new form Nuevo_Cliente
      */
@@ -33,9 +33,10 @@ public class Tabla_Conductores extends javax.swing.JFrame {
         this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - TABLA CLIENTES");
         listarConductores();
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         cmbCategorias.setSelectedIndex(0);
+        cmbEstado.setSelectedIndex(0);
         txtCedula.setText("");
         txtFechaIngreso.setText("");
         txtNombreConductor.setText("");
@@ -47,12 +48,12 @@ public class Tabla_Conductores extends javax.swing.JFrame {
         txtNumeroLicencia.setText("");
         txtCedula.requestFocus();
     }
-    
-    public void actualizar(){
+
+    public void actualizar() {
         LimpiarConductores();
-        listarConductores(); 
+        listarConductores();
     }
-    
+
     public void listarConductores() {
         conductor = db.ListConductores();
         DefaultTableModel tb = (DefaultTableModel) tbConductores.getModel();
@@ -110,6 +111,8 @@ public class Tabla_Conductores extends javax.swing.JFrame {
         lblNit8 = new javax.swing.JLabel();
         lblNit9 = new javax.swing.JLabel();
         txtFechaIngreso = new javax.swing.JTextField();
+        lblNit10 = new javax.swing.JLabel();
+        cmbEstado = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -251,9 +254,9 @@ public class Tabla_Conductores extends javax.swing.JFrame {
         lblNit5.setBounds(520, 80, 130, 14);
 
         lblNit6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit6.setText("CATEGORIA");
+        lblNit6.setText("ESTADO");
         jPanel5.add(lblNit6);
-        lblNit6.setBounds(20, 200, 110, 14);
+        lblNit6.setBounds(270, 200, 80, 14);
         jPanel5.add(txtEmail);
         txtEmail.setBounds(20, 160, 230, 30);
 
@@ -281,6 +284,15 @@ public class Tabla_Conductores extends javax.swing.JFrame {
         lblNit9.setBounds(520, 140, 110, 14);
         jPanel5.add(txtFechaIngreso);
         txtFechaIngreso.setBounds(520, 100, 230, 30);
+
+        lblNit10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit10.setText("CATEGORIA");
+        jPanel5.add(lblNit10);
+        lblNit10.setBounds(20, 200, 110, 14);
+
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO" }));
+        jPanel5.add(cmbEstado);
+        cmbEstado.setBounds(270, 220, 160, 30);
 
         jPanel1.add(jPanel5);
         jPanel5.setBounds(40, 70, 780, 270);
@@ -328,8 +340,7 @@ public class Tabla_Conductores extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "error\n" + ex.getMessage());
         }
-        */
-
+         */
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -337,44 +348,73 @@ public class Tabla_Conductores extends javax.swing.JFrame {
 
         actualizar();
         limpiar();
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void tbConductoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbConductoresMouseClicked
 
-        /*
         int seleccion = tbConductores.getSelectedRow();
-        
+
         String categoria = String.valueOf(tbConductores.getValueAt(seleccion, 10));
-        
+
         try {
-            if(categoria.equals("JURIDICA")){
-            cmbTipoPersona.setSelectedIndex(0);
-        }
-        if(tipo_persona.equals("NATURAL")){
-            cmbTipoPersona.setSelectedIndex(1);
-        }
+            if (categoria.equals("A1")) {
+                cmbCategorias.setSelectedIndex(0);
+            }
+            if (categoria.equals("A2")) {
+                cmbCategorias.setSelectedIndex(1);
+            }
+            if (categoria.equals("B1")) {
+                cmbCategorias.setSelectedIndex(2);
+            }
+            if (categoria.equals("B2")) {
+                cmbCategorias.setSelectedIndex(3);
+            }
+            if (categoria.equals("B3")) {
+                cmbCategorias.setSelectedIndex(4);
+            }
+            if (categoria.equals("C1")) {
+                cmbCategorias.setSelectedIndex(5);
+            }
+            if (categoria.equals("C2")) {
+                cmbCategorias.setSelectedIndex(6);
+            }
+            if (categoria.equals("C3")) {
+                cmbCategorias.setSelectedIndex(7);
+            }
         } catch (Exception e) {
-            System.out.println("error:"+e);
+            System.out.println("error:" + e);
         }
-        
-        txtNit.setText(String.valueOf(tbConductores.getValueAt(seleccion, 2)));
-        txtNombre.setText(String.valueOf(tbConductores.getValueAt(seleccion, 3)));
-        txtDepartamento.setText(String.valueOf(tbConductores.getValueAt(seleccion, 4)));
-        txtMunicipio.setText(String.valueOf(tbConductores.getValueAt(seleccion, 5)));
-        txtDireccion.setText(String.valueOf(tbConductores.getValueAt(seleccion, 6)));
-        txtContacto.setText(String.valueOf(tbConductores.getValueAt(seleccion, 7)));
-        txtEmail.setText(String.valueOf(tbConductores.getValueAt(seleccion, 8)));
-        txtTelefono.setText(String.valueOf(tbConductores.getValueAt(seleccion, 9)));
-        */
- 
+
+        txtCedula.setText(String.valueOf(tbConductores.getValueAt(seleccion, 1)));
+        txtNombreConductor.setText(String.valueOf(tbConductores.getValueAt(seleccion, 2)));
+        txtDepartamento.setText(String.valueOf(tbConductores.getValueAt(seleccion, 3)));
+        txtMunicipio.setText(String.valueOf(tbConductores.getValueAt(seleccion, 4)));
+        txtDireccion.setText(String.valueOf(tbConductores.getValueAt(seleccion, 5)));
+
+        txtFechaIngreso.setText(String.valueOf(tbConductores.getValueAt(seleccion, 6)));
+        txtEmail.setText(String.valueOf(tbConductores.getValueAt(seleccion, 7)));
+        txtTelefono.setText(String.valueOf(tbConductores.getValueAt(seleccion, 8)));
+        txtNumeroLicencia.setText(String.valueOf(tbConductores.getValueAt(seleccion, 9)));
+        String estado = String.valueOf(tbConductores.getValueAt(seleccion, 11));
+        try {
+            if (categoria.equals("ACTIVO")) {
+                cmbEstado.setSelectedIndex(0);
+            }
+            if (categoria.equals("INACTIVO")) {
+                cmbEstado.setSelectedIndex(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error:" + e);
+        }
+
         // TODO add your handling code here:
     }//GEN-LAST:event_tbConductoresMouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-        
         if (txtCedula.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un registro", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -392,6 +432,7 @@ public class Tabla_Conductores extends javax.swing.JFrame {
             con.setTelefono(txtTelefono.getText().toUpperCase());
             con.setNumero_licencia(txtNumeroLicencia.getText().toUpperCase());
             con.setClase_categoria(cmbCategorias.getSelectedItem().toString());
+            con.setEstado(cmbEstado.getSelectedItem().toString());
             con.setId_conductor(Integer.parseInt(String.valueOf(tbConductores.getValueAt(seleccion, 0).toString())));
 
             Object[] opciones = {"Aceptar", "Cancelar"};
@@ -405,21 +446,20 @@ public class Tabla_Conductores extends javax.swing.JFrame {
                 limpiar();
                 LimpiarConductores();
                 listarConductores();
-                
+
             } else {
                 actualizar();
                 limpiar();
             }
 
         }
-        
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-       if (txtCedula.getText().equals("")) {
+        if (txtCedula.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un registro", "", JOptionPane.INFORMATION_MESSAGE);
         } else {
 
@@ -449,14 +489,13 @@ public class Tabla_Conductores extends javax.swing.JFrame {
                 limpiar();
                 LimpiarConductores();
                 listarConductores();
-                
+
             } else {
                 actualizar();
                 limpiar();
             }
 
         }
-        
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -502,6 +541,7 @@ public class Tabla_Conductores extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JComboBox<String> cmbCategorias;
+    private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -514,6 +554,7 @@ public class Tabla_Conductores extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblNit;
     private javax.swing.JLabel lblNit1;
+    private javax.swing.JLabel lblNit10;
     private javax.swing.JLabel lblNit2;
     private javax.swing.JLabel lblNit3;
     private javax.swing.JLabel lblNit4;
