@@ -32,7 +32,7 @@ public class vehiculosMysql {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM vehiculos WHERE estedo = 'ACTIVO' ORDER BY id_vehiculo ASC");
+            ResultSet rs = st.executeQuery("SELECT * FROM vehiculos WHERE estado = 'ACTIVO' ORDER BY fecha_ingreso ASC");
 
             while (rs.next()) {
                 vehiculos ve = new vehiculos();
@@ -42,6 +42,7 @@ public class vehiculosMysql {
                 ve.setFecha_ingreso(rs.getString("fecha_ingreso"));
                 ve.setClase(rs.getString("clase"));
                 ve.setMarca(rs.getString("marca"));
+                ve.setModelo(rs.getString("modelo"));
                 ve.setColor(rs.getString("color"));
                 ve.setMetros_cubicos(rs.getString("metros_cubicos"));
                 ve.setPropio(rs.getString("propio"));
@@ -84,7 +85,7 @@ public class vehiculosMysql {
         }
     }
 
-    public void EliminarPropietario(vehiculos ve) {
+    public void EliminarVehiculo(vehiculos ve) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             PreparedStatement pst = (PreparedStatement) cn.prepareStatement("DELETE FROM vehiculos WHERE id_vehiculo=?");
@@ -99,7 +100,7 @@ public class vehiculosMysql {
         }
     }
 
-    public void EditarPropietario(vehiculos ve) {
+    public void EditarVehiculo(vehiculos ve) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             PreparedStatement pst = (PreparedStatement) cn.prepareStatement("UPDATE vehiculos SET placa=?,año_modelo=?,fecha_ingreso=?,clase=?,marca=?,modelo=?,color=?,metros_cubicos=?,propio=?,estado=?,id_conductor=?,id_propietario=? WHERE id_vehiculo = ?");
