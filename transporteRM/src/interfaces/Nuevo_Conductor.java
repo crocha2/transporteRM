@@ -22,7 +22,7 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
 
     ArrayList<conductores> conductor;
     conductoresMysql dbconductor = new conductoresMysql();
-    
+
     /**
      * Creates new form Nuevo_Propietario
      */
@@ -32,8 +32,8 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
         this.setResizable(false);
         this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - NUEVO CONDUCTOR");
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         txtCedula.setText("");
         txtNombreConductor.setText("");
         txtDepartamento.setText("");
@@ -42,7 +42,7 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
         txtEmail.setText("");
         txtTelefono.setText("");
         txtCedula.requestFocus();
-        
+
     }
 
     /**
@@ -226,38 +226,39 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        if(txtCedula.getText().isEmpty() || txtNombreConductor.getText().isEmpty()){
+        if (txtCedula.getText().isEmpty() || txtNombreConductor.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe gestionar el formulario");
-        }else{
-           try {
-            conductores con = new conductores();
-            con.setCedula(txtCedula.getText().toUpperCase());
-            con.setNombre_conductor(txtNombreConductor.getText().toUpperCase());
-            con.setDepartamento(txtDepartamento.getText().toUpperCase());
-            con.setMunicipio(txtMunicipio.getText().toUpperCase());
-            con.setDireccion(txtDireccion.getText().toUpperCase());
-           
-            String formato = txtFechaIngreso.getDateFormatString();
-            Date date = txtFechaIngreso.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat(formato);
-            String dato = String.valueOf(sdf.format(date));
-            con.setFecha_ingreso(dato);
+        } else {
+            try {
+                conductores con = new conductores();
+                con.setCedula(txtCedula.getText().toUpperCase());
+                con.setNombre_conductor(txtNombreConductor.getText().toUpperCase());
+                con.setDepartamento(txtDepartamento.getText().toUpperCase());
+                con.setMunicipio(txtMunicipio.getText().toUpperCase());
+                con.setDireccion(txtDireccion.getText().toUpperCase());
 
-            con.setEmail(txtEmail.getText().toUpperCase());
-            con.setTelefono(txtTelefono.getText().toUpperCase());
-            con.setNumero_licencia(txtNumeroLicencia.getText().toUpperCase());
-            con.setClase_categoria(cmbCategorias.getSelectedItem().toString());
-            con.setEstado("ACTIVO");
+                String formato = txtFechaIngreso.getDateFormatString();
+                Date date = txtFechaIngreso.getDate();
+                SimpleDateFormat sdf = new SimpleDateFormat(formato);
+                String dato = String.valueOf(sdf.format(date));
+                con.setFecha_ingreso(dato);
 
-            dbconductor.insertarConductor(con);
-            
-            dispose();
+                con.setEmail(txtEmail.getText().toUpperCase());
+                con.setTelefono(txtTelefono.getText().toUpperCase());
+                con.setNumero_licencia(txtNumeroLicencia.getText().toUpperCase());
+                con.setClase_categoria(cmbCategorias.getSelectedItem().toString());
+                con.setEstado("ACTIVO");
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        } 
+                dbconductor.insertarConductor(con);
+
+                Tabla_Conductores obj = new Tabla_Conductores();
+                obj.setVisible(true);
+                dispose();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
         }
-        
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed

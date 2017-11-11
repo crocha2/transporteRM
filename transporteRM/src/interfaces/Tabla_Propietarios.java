@@ -5,10 +5,16 @@
  */
 package interfaces;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import metodos.propietariosMysql;
 import principales.propietarios;
 
@@ -28,7 +34,10 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - NUEVO PROPIETARIO");
+        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - TABLE DE PROPIETARIO");
+        listarPropietarios();
+        txtIdPropietario.setEnabled(false);
+        autoCompletePropietarios();
     }
     
     public void limpiar(){
@@ -41,6 +50,36 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         txtTelefono.setText("");
         txtIdentificacion.requestFocus();
         
+    }
+    
+    public void listarPropietarios() {
+        propietario = dbPropietario.ListPropietario();
+        DefaultTableModel tb = (DefaultTableModel) tbPropietarios.getModel();
+        propietario.forEach((pro) -> {
+            tb.addRow(new Object[]{pro.getId_propietario(),pro.getIdentificacion(),pro.getNombre_propietario(),pro.getDepartamento(),pro.getMunicipio(),pro.getDireccion(),pro.getFecha_ingreso(),pro.getEmail(),pro.getTelefono(),pro.getEstado()});
+        });
+    }
+
+    public void LimpiarPropietarios() {
+        DefaultTableModel tb = (DefaultTableModel) tbPropietarios.getModel();
+        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
+            tb.removeRow(i);
+        }
+    }
+
+    public void autoCompletePropietarios() {
+        TextAutoCompleter TextAutoCompleter = new TextAutoCompleter(txtBuscar);
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = (Statement) cn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT nombre_propietario FROM propietarios");
+            while (rs.next()) {
+                TextAutoCompleter.addItem(rs.getString("nombre_propietario"));
+            }
+            cn.close();
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+        }
     }
 
     /**
@@ -55,7 +94,6 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         txtIdentificacion = new javax.swing.JTextField();
         lblNit = new javax.swing.JLabel();
@@ -68,11 +106,23 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         lblNit4 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         lblNit5 = new javax.swing.JLabel();
-        txtFechaIngreso = new com.toedter.calendar.JDateChooser();
         lblNit6 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         lblNit7 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
+        txtFechaIngreso = new javax.swing.JTextField();
+        cmbEstado = new javax.swing.JComboBox<>();
+        lblNit8 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        btnBuscar = new javax.swing.JButton();
+        txtBuscar = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbPropietarios = new javax.swing.JTable();
+        txtIdPropietario = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -83,14 +133,6 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
-
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setText("REGISTRAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
@@ -112,66 +154,145 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         lblNit2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit2.setText("DEPARTAMENTO");
         jPanel2.add(lblNit2);
-        lblNit2.setBounds(20, 80, 110, 14);
+        lblNit2.setBounds(510, 20, 110, 14);
         jPanel2.add(txtDepartamento);
-        txtDepartamento.setBounds(20, 100, 230, 30);
+        txtDepartamento.setBounds(510, 40, 230, 30);
 
         lblNit3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit3.setText("MUNICIPIO");
         jPanel2.add(lblNit3);
-        lblNit3.setBounds(270, 80, 110, 14);
+        lblNit3.setBounds(20, 80, 110, 14);
         jPanel2.add(txtMunicipio);
-        txtMunicipio.setBounds(270, 100, 230, 30);
+        txtMunicipio.setBounds(20, 100, 230, 30);
 
         lblNit4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit4.setText("DIRECCION");
         jPanel2.add(lblNit4);
-        lblNit4.setBounds(20, 140, 110, 14);
+        lblNit4.setBounds(270, 80, 110, 14);
         jPanel2.add(txtDireccion);
-        txtDireccion.setBounds(20, 160, 230, 30);
+        txtDireccion.setBounds(270, 100, 230, 30);
 
         lblNit5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit5.setText("FECHA DE INGRESO");
         jPanel2.add(lblNit5);
-        lblNit5.setBounds(270, 140, 130, 14);
-
-        txtFechaIngreso.setDateFormatString("yyyy-MM-dd");
-        jPanel2.add(txtFechaIngreso);
-        txtFechaIngreso.setBounds(270, 160, 230, 30);
+        lblNit5.setBounds(510, 80, 130, 14);
 
         lblNit6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit6.setText("EMAIL");
         jPanel2.add(lblNit6);
-        lblNit6.setBounds(20, 200, 110, 14);
+        lblNit6.setBounds(20, 140, 110, 14);
         jPanel2.add(txtEmail);
-        txtEmail.setBounds(20, 220, 230, 30);
+        txtEmail.setBounds(20, 160, 230, 30);
 
         lblNit7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit7.setText("TELEFONO");
+        lblNit7.setText("ESTADO");
         jPanel2.add(lblNit7);
-        lblNit7.setBounds(270, 200, 110, 14);
+        lblNit7.setBounds(510, 140, 110, 14);
         jPanel2.add(txtTelefono);
-        txtTelefono.setBounds(270, 220, 230, 30);
+        txtTelefono.setBounds(270, 160, 230, 30);
+        jPanel2.add(txtFechaIngreso);
+        txtFechaIngreso.setBounds(510, 100, 230, 30);
+
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO" }));
+        jPanel2.add(cmbEstado);
+        cmbEstado.setBounds(510, 160, 230, 30);
+
+        lblNit8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit8.setText("TELEFONO");
+        jPanel2.add(lblNit8);
+        lblNit8.setBounds(270, 140, 110, 14);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setLayout(null);
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton1.setText("EDITAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(10, 10, 130, 30);
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton2.setText("ELIMINAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+        jButton2.setBounds(150, 10, 130, 30);
+
+        jButton3.setText("...");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton3);
+        jButton3.setBounds(290, 10, 70, 30);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.setLayout(null);
+
+        btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnBuscar);
+        btnBuscar.setBounds(270, 10, 90, 30);
+        jPanel4.add(txtBuscar);
+        txtBuscar.setBounds(10, 10, 250, 30);
+
+        tbPropietarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "IDENTIFICACION", "NOMBRE", "DEPARTAMENTO", "MUNICIPIO", "DIRECCION", "INGRESO", "EMAIL", "TELEFONO", "ESTADO"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbPropietarios.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbPropietarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPropietariosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbPropietarios);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(24, 24, 24)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
+                            .addComponent(txtIdPropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,9 +302,15 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIdPropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -191,7 +318,9 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,30 +333,28 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         if(txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Debe gestionar el formulario");
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
         }else{
            try {
             propietarios pro = new propietarios();
+            pro.setId_propietario(Integer.parseInt(txtIdPropietario.getText()));
             pro.setIdentificacion(txtIdentificacion.getText().toUpperCase());
             pro.setNombre_propietario(txtNombrePropietario.getText().toUpperCase());
             pro.setDepartamento(txtDepartamento.getText().toUpperCase());
             pro.setMunicipio(txtMunicipio.getText().toUpperCase());
             pro.setDireccion(txtDireccion.getText().toUpperCase());
-           
-            String formato = txtFechaIngreso.getDateFormatString();
-            Date date = txtFechaIngreso.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat(formato);
-            String dato = String.valueOf(sdf.format(date));
-            pro.setFecha_ingreso(dato);
+         
+            pro.setFecha_ingreso(txtFechaIngreso.getText().toUpperCase());
 
             pro.setEmail(txtEmail.getText().toUpperCase());
             pro.setTelefono(txtTelefono.getText().toUpperCase());
-            pro.setEstado("ACTIVO");
+            pro.setEstado(cmbEstado.getSelectedItem().toString());
 
-            dbPropietario.insertarPropietario(pro);
-            
-            dispose();
+            dbPropietario.EditarPropietario(pro);
 
+            limpiar();
+            LimpiarPropietarios();
+            listarPropietarios();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         } 
@@ -236,6 +363,100 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        if(txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
+        }else{
+           try {
+            propietarios pro = new propietarios();
+            pro.setId_propietario(Integer.parseInt(txtIdPropietario.getText()));
+            
+            dbPropietario.EliminarPropietario(pro);
+
+            limpiar();
+            LimpiarPropietarios();
+            listarPropietarios();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        } 
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        /*
+        try {
+            String guardar = txtBuscar.getText();
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("Select * from recorridos where recorrido = ?");
+            pst.setString(1, guardar);
+            //pst.setString(1, CMBID.getName());
+            ResultSet rs = pst.executeQuery();
+            LimpiarRecorridos();
+            if (rs.next()) {
+
+                recorridos rec = new recorridos();
+                rec.setId_recorrido(rs.getInt("id_recorrido"));
+                rec.setRecorrido(rs.getString("recorrido"));
+                rec.setKm_recorridos(rs.getString("km_recorridos"));
+                recorrido.add(rec);
+                DefaultTableModel tb = (DefaultTableModel) tbRecorridos.getModel();
+                tb.addRow(new Object[]{rec.getId_recorrido(), rec.getRecorrido(), rec.getKm_recorridos()});
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe el recorrido");
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "error\n" + ex.getMessage());
+        }
+        */
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void tbPropietariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPropietariosMouseClicked
+
+        int seleccion = tbPropietarios.getSelectedRow();
+
+        txtIdPropietario.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 0)));
+        txtIdentificacion.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 1)));
+        txtNombrePropietario.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 2)));
+        txtDepartamento.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 3)));  
+        txtMunicipio.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 4)));        
+        txtDireccion.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 5)));
+        txtFechaIngreso.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 6)));       
+        txtEmail.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 7)));         
+        txtTelefono.setText(String.valueOf(tbPropietarios.getValueAt(seleccion, 8)));        
+        String estado = String.valueOf(tbPropietarios.getValueAt(seleccion, 9));
+        
+        try {
+            if (estado.equals("ACTIVO")) {
+                cmbEstado.setSelectedIndex(0);
+            }
+            if (estado.equals("INACTIVO")) {
+                cmbEstado.setSelectedIndex(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error:" + e);
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbPropietariosMouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        limpiar();
+        LimpiarPropietarios();
+        listarPropietarios();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -274,10 +495,17 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblNit;
     private javax.swing.JLabel lblNit1;
@@ -287,10 +515,14 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
     private javax.swing.JLabel lblNit5;
     private javax.swing.JLabel lblNit6;
     private javax.swing.JLabel lblNit7;
+    private javax.swing.JLabel lblNit8;
+    private javax.swing.JTable tbPropietarios;
+    private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtDepartamento;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtEmail;
-    private com.toedter.calendar.JDateChooser txtFechaIngreso;
+    private javax.swing.JTextField txtFechaIngreso;
+    private javax.swing.JTextField txtIdPropietario;
     private javax.swing.JTextField txtIdentificacion;
     private javax.swing.JTextField txtMunicipio;
     private javax.swing.JTextField txtNombrePropietario;

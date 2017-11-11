@@ -32,7 +32,7 @@ public class vehiculosMysql {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM vehiculos WHERE estado = 'ACTIVO' ORDER BY fecha_ingreso ASC");
+            ResultSet rs = st.executeQuery("SELECT * FROM vehiculos ORDER BY fecha_ingreso ASC");
 
             while (rs.next()) {
                 vehiculos ve = new vehiculos();

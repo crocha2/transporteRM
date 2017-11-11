@@ -97,7 +97,7 @@ public class propietariosMysql {
     public void EditarPropietario(propietarios propietario) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
-            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("UPDATE propietarios SET id_propietario=?,identificacion=?,nombre_propietario=?,departamento=?,municipio=?,direccion=?,fecha_ingreso=?,email=?,telefono=?,estado=? WHERE id_propietario = ?");
+            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("UPDATE propietarios SET identificacion=?,nombre_propietario=?,departamento=?,municipio=?,direccion=?,fecha_ingreso=?,email=?,telefono=?,estado=? WHERE id_propietario = ?");
             pst.setString(1, propietario.getIdentificacion());
             pst.setString(2, propietario.getNombre_propietario());
             pst.setString(3, propietario.getDepartamento());

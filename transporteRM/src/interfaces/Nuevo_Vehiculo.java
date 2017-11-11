@@ -378,7 +378,8 @@ public final class Nuevo_Vehiculo extends javax.swing.JFrame {
 
             dbvehiculo.insertarVehiculo(ve);
             
-            limpiar();
+            Tabla_Vehiculos obj = new Tabla_Vehiculos();
+            obj.setVisible(true);
             dispose();
 
         } catch (Exception e) {

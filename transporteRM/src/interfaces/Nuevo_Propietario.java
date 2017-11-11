@@ -20,7 +20,7 @@ public class Nuevo_Propietario extends javax.swing.JFrame {
 
     ArrayList<propietarios> propietario;
     propietariosMysql dbPropietario = new propietariosMysql();
-    
+
     /**
      * Creates new form Nuevo_Propietario
      */
@@ -30,8 +30,8 @@ public class Nuevo_Propietario extends javax.swing.JFrame {
         this.setResizable(false);
         this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - NUEVO PROPIETARIO");
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         txtIdentificacion.setText("");
         txtNombrePropietario.setText("");
         txtDepartamento.setText("");
@@ -40,7 +40,7 @@ public class Nuevo_Propietario extends javax.swing.JFrame {
         txtEmail.setText("");
         txtTelefono.setText("");
         txtIdentificacion.requestFocus();
-        
+
     }
 
     /**
@@ -203,36 +203,37 @@ public class Nuevo_Propietario extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        if(txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()){
+        if (txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe gestionar el formulario");
-        }else{
-           try {
-            propietarios pro = new propietarios();
-            pro.setIdentificacion(txtIdentificacion.getText().toUpperCase());
-            pro.setNombre_propietario(txtNombrePropietario.getText().toUpperCase());
-            pro.setDepartamento(txtDepartamento.getText().toUpperCase());
-            pro.setMunicipio(txtMunicipio.getText().toUpperCase());
-            pro.setDireccion(txtDireccion.getText().toUpperCase());
-           
-            String formato = txtFechaIngreso.getDateFormatString();
-            Date date = txtFechaIngreso.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat(formato);
-            String dato = String.valueOf(sdf.format(date));
-            pro.setFecha_ingreso(dato);
+        } else {
+            try {
+                propietarios pro = new propietarios();
+                pro.setIdentificacion(txtIdentificacion.getText().toUpperCase());
+                pro.setNombre_propietario(txtNombrePropietario.getText().toUpperCase());
+                pro.setDepartamento(txtDepartamento.getText().toUpperCase());
+                pro.setMunicipio(txtMunicipio.getText().toUpperCase());
+                pro.setDireccion(txtDireccion.getText().toUpperCase());
 
-            pro.setEmail(txtEmail.getText().toUpperCase());
-            pro.setTelefono(txtTelefono.getText().toUpperCase());
-            pro.setEstado("ACTIVO");
+                String formato = txtFechaIngreso.getDateFormatString();
+                Date date = txtFechaIngreso.getDate();
+                SimpleDateFormat sdf = new SimpleDateFormat(formato);
+                String dato = String.valueOf(sdf.format(date));
+                pro.setFecha_ingreso(dato);
 
-            dbPropietario.insertarPropietario(pro);
-            
-            dispose();
+                pro.setEmail(txtEmail.getText().toUpperCase());
+                pro.setTelefono(txtTelefono.getText().toUpperCase());
+                pro.setEstado("ACTIVO");
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        } 
+                dbPropietario.insertarPropietario(pro);
+
+                Tabla_Propietarios obj = new Tabla_Propietarios();
+                obj.setVisible(true);
+                dispose();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
         }
-        
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed

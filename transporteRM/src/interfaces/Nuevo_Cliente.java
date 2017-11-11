@@ -249,6 +249,9 @@ public class Nuevo_Cliente extends javax.swing.JFrame {
                 txtContacto.setText("");
                 cmbTipoPersona.setSelectedIndex(0);
                 txtMunicipio.setText("");
+                
+                Tabla_Clientes obj = new Tabla_Clientes();
+                obj.setVisible(true);
                 dispose();
         
             } catch (Exception e) {

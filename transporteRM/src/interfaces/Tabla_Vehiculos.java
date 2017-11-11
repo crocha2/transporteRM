@@ -170,7 +170,6 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         txtIdConductor = new javax.swing.JTextField();
         lblNit10 = new javax.swing.JLabel();
-        lblNit11 = new javax.swing.JLabel();
         txtMetroCubico = new javax.swing.JTextField();
         txtConductor = new javax.swing.JTextField();
         txtPropietario = new javax.swing.JTextField();
@@ -185,7 +184,8 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         lblNit12 = new javax.swing.JLabel();
-        txtEstado = new javax.swing.JTextField();
+        lblNit6 = new javax.swing.JLabel();
+        cmbEstado = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         auto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -275,12 +275,6 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
         lblNit10.setText("METROS CUBICOS (m3)");
         jPanel5.add(lblNit10);
         lblNit10.setBounds(20, 20, 160, 14);
-
-        lblNit11.setBackground(new java.awt.Color(204, 204, 204));
-        lblNit11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit11.setText("ESTADO");
-        jPanel5.add(lblNit11);
-        lblNit11.setBounds(410, 20, 110, 14);
         jPanel5.add(txtMetroCubico);
         txtMetroCubico.setBounds(20, 40, 250, 30);
         jPanel5.add(txtConductor);
@@ -359,8 +353,15 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
         lblNit12.setText("PROPIO");
         jPanel5.add(lblNit12);
         lblNit12.setBounds(290, 20, 110, 14);
-        jPanel5.add(txtEstado);
-        txtEstado.setBounds(410, 40, 130, 30);
+
+        lblNit6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit6.setText("ESTADO");
+        jPanel5.add(lblNit6);
+        lblNit6.setBounds(410, 20, 80, 14);
+
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ACTIVO", "INACTIVO" }));
+        jPanel5.add(cmbEstado);
+        cmbEstado.setBounds(410, 40, 140, 30);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(null);
@@ -505,7 +506,7 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         if (txtAñoModelo.getText().isEmpty() || txtIdConductor.getText().isEmpty() || txtIdPropietario.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe gestionar el formulario");
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
         } else {
             try {
                 vehiculos ve = new vehiculos();
@@ -523,7 +524,7 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
                 ve.setPropio(txtPropio.getText().toUpperCase());
                 ve.setId_conductor(Integer.parseInt(txtIdConductor.getText()));
                 ve.setId_propietario(Integer.parseInt(txtIdPropietario.getText()));
-                ve.setEstado(txtEstado.getText().toUpperCase());
+                ve.setEstado(cmbEstado.getSelectedItem().toString());
 
                 dbvehiculo.EditarVehiculo(ve);
 
@@ -598,7 +599,7 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 if (txtAñoModelo.getText().isEmpty() || txtIdConductor.getText().isEmpty() || txtIdPropietario.getText().isEmpty() || txtIdVehiculo.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe gestionar el formulario");
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
         } else {
             try {
                 vehiculos ve = new vehiculos();
@@ -650,7 +651,20 @@ if (txtAñoModelo.getText().isEmpty() || txtIdConductor.getText().isEmpty() || t
         txtColor.setText(String.valueOf(tbVehiculos.getValueAt(seleccion, 7)));         
         txtMetroCubico.setText(String.valueOf(tbVehiculos.getValueAt(seleccion, 8)));        
         txtPropio.setText(String.valueOf(tbVehiculos.getValueAt(seleccion, 9)));
-        txtEstado.setText(String.valueOf(tbVehiculos.getValueAt(seleccion, 10)));
+        //txtEstado.setText(String.valueOf(tbVehiculos.getValueAt(seleccion, 10)));
+        String estado = String.valueOf(tbVehiculos.getValueAt(seleccion, 10));
+        
+        try {
+            if (estado.equals("ACTIVO")) {
+                cmbEstado.setSelectedIndex(0);
+            }
+            if (estado.equals("INACTIVO")) {
+                cmbEstado.setSelectedIndex(1);
+            }
+
+        } catch (Exception e) {
+            System.out.println("error:" + e);
+        }
         
         txtIdConductor.setText(String.valueOf(tbVehiculos.getValueAt(seleccion, 11)));
         txtIdPropietario.setText(String.valueOf(tbVehiculos.getValueAt(seleccion, 12)));
@@ -754,6 +768,7 @@ if (txtAñoModelo.getText().isEmpty() || txtIdConductor.getText().isEmpty() || t
     private javax.swing.JTextField auto;
     private javax.swing.JButton btnBuscarCon;
     private javax.swing.JButton btnBuscarPro;
+    private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -773,12 +788,12 @@ if (txtAñoModelo.getText().isEmpty() || txtIdConductor.getText().isEmpty() || t
     private javax.swing.JLabel lblNit;
     private javax.swing.JLabel lblNit1;
     private javax.swing.JLabel lblNit10;
-    private javax.swing.JLabel lblNit11;
     private javax.swing.JLabel lblNit12;
     private javax.swing.JLabel lblNit13;
     private javax.swing.JLabel lblNit3;
     private javax.swing.JLabel lblNit4;
     private javax.swing.JLabel lblNit5;
+    private javax.swing.JLabel lblNit6;
     private javax.swing.JLabel lblNit7;
     private javax.swing.JLabel lblNit8;
     private javax.swing.JLabel lblNit9;
@@ -788,7 +803,6 @@ if (txtAñoModelo.getText().isEmpty() || txtIdConductor.getText().isEmpty() || t
     private javax.swing.JTextField txtClase;
     private javax.swing.JTextField txtColor;
     private javax.swing.JTextField txtConductor;
-    private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtFechaIngreso;
     private javax.swing.JTextField txtIdConductor;
     private javax.swing.JTextField txtIdPropietario;

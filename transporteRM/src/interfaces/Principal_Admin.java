@@ -99,7 +99,7 @@ public class Principal_Admin extends javax.swing.JFrame {
 
         jMenu10.setText("Conductores");
 
-        jMenuItem10.setText("Registrar Conductor");
+        jMenuItem10.setText("Registrar");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
@@ -107,7 +107,7 @@ public class Principal_Admin extends javax.swing.JFrame {
         });
         jMenu10.add(jMenuItem10);
 
-        jMenuItem17.setText("Gestionar Conductor");
+        jMenuItem17.setText("Gestionar");
         jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem17ActionPerformed(evt);
@@ -308,6 +308,10 @@ public class Principal_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+
+        Tabla_Propietarios obj = new Tabla_Propietarios();
+        obj.setVisible(true);
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
