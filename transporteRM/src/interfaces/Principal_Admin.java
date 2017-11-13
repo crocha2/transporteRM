@@ -51,6 +51,9 @@ public class Principal_Admin extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem18 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
@@ -60,7 +63,6 @@ public class Principal_Admin extends javax.swing.JFrame {
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
         jMenuItem16 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
 
@@ -178,6 +180,16 @@ public class Principal_Admin extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("Viajes");
+
+        jMenuItem18.setText("Registrar");
+        jMenu3.add(jMenuItem18);
+
+        jMenuItem19.setText("Gestionar");
+        jMenu3.add(jMenuItem19);
+
+        jMenuBar1.add(jMenu3);
+
         jMenu4.setText("Documentos");
 
         jMenu8.setText("Liquidacion");
@@ -207,9 +219,6 @@ public class Principal_Admin extends javax.swing.JFrame {
         jMenu4.add(jMenu9);
 
         jMenuBar1.add(jMenu4);
-
-        jMenu3.setText("Reportes");
-        jMenuBar1.add(jMenu3);
 
         jMenu7.setText("Usuarios");
 
@@ -389,6 +398,8 @@ public class Principal_Admin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
