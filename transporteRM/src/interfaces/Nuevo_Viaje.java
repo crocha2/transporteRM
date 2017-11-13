@@ -359,7 +359,7 @@ public final class Nuevo_Viaje extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        if (txtIdVehiculo.getText().isEmpty() || txtTotal.getText().isEmpty()) {
+        if (txtIdVehiculo.getText().isEmpty() || txtTotal.getText().isEmpty() || txtPlaca.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe gestionar el formulario");
         } else {
             try {
@@ -371,7 +371,8 @@ public final class Nuevo_Viaje extends javax.swing.JFrame {
                 SimpleDateFormat sdf = new SimpleDateFormat(formato);
                 String dato = String.valueOf(sdf.format(date));
                 vi.setFecha(dato);
-
+                
+                vi.setPlaca(txtPlaca.getText().toUpperCase());
                 vi.setDia(cmbDia.getSelectedItem().toString());
                 vi.setRecorrido(txtRecorrido.getText().toUpperCase());
                 vi.setKm(Integer.parseInt(txtKm.getText()));

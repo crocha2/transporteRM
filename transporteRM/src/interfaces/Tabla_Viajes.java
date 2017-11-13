@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import metodos.propietariosMysql;
 import metodos.viajesMysql;
 import principales.conductores;
@@ -38,14 +39,19 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         //this.setResizable(false);
-        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - NUEVO VIAJE");
+        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - TABLA VIAJE");
         txtIdVehiculo.setEnabled(false);
         autoCompletePlaca();
         autoCompleteRecorridos();
-        EnCero();
         txtTotal.setDisabledTextColor(java.awt.Color.GREEN);
+        
+        txtPlaca.setEnabled(false);
+        btnBuscarPla.setVisible(false);
+        
+        listarViajes();
+        EnCero();
     }
-
+    
     public void EnCero() {
 
         txtUnidad.setText("" + 1);
@@ -54,6 +60,41 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         txtKm.setText("" + 1);
 
     }
+    
+    public void limpiar() {
+        
+        txtPlaca.setEnabled(false);
+        btnBuscarPla.setVisible(false);
+        txtPlaca.setText("");
+        txtFecha.setText("");
+        cmbDias.setSelectedIndex(0);
+        txtRecorrido.setText("");
+        txtKm.setText("");
+        txtM3.setText("");
+        txtUnidad.setText("");
+        cmbValorM3.setSelectedIndex(0);
+        
+        txtIdViaje.setText("");
+        txtIdVehiculo.setText("");
+        txtPlaca.requestFocus();
+        EnCero();
+    }
+    
+    public void listarViajes() {
+        viaje = dbviaje.ListViajes();
+        DefaultTableModel tb = (DefaultTableModel) tbViajes.getModel();
+        viaje.forEach((ve) -> {
+            tb.addRow(new Object[]{ve.getId_viaje(),ve.getPlaca(),ve.getFecha(),ve.getDia(),ve.getRecorrido(),ve.getKm(),ve.getM3(),ve.getUnidad(),ve.getValor_m3(),ve.getTotal(),ve.getId_vehiculo()});
+        });
+    }
+
+    public void LimpiarViajes() {
+        DefaultTableModel tb = (DefaultTableModel) tbViajes.getModel();
+        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
+            tb.removeRow(i);
+        }
+    }
+
 
     public void total() {
 
@@ -115,7 +156,6 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         lblNit = new javax.swing.JLabel();
         lblNit3 = new javax.swing.JLabel();
         txtRecorrido = new javax.swing.JTextField();
-        txtFecha = new com.toedter.calendar.JDateChooser();
         lblNit2 = new javax.swing.JLabel();
         lblNit4 = new javax.swing.JLabel();
         lblNit5 = new javax.swing.JLabel();
@@ -129,13 +169,17 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         lblNit7 = new javax.swing.JLabel();
-        cmbDia = new javax.swing.JComboBox<>();
         lblNit8 = new javax.swing.JLabel();
         txtKm = new javax.swing.JTextField();
         jSeparator4 = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        txtFecha = new javax.swing.JTextField();
+        btnBuscarPla = new javax.swing.JButton();
+        btnEditarPlaca = new javax.swing.JButton();
+        cmbDias = new javax.swing.JComboBox<>();
+        btnBuscarPla1 = new javax.swing.JButton();
         txtIdVehiculo = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
@@ -143,7 +187,8 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbViajes = new javax.swing.JTable();
+        txtIdViaje = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -158,43 +203,39 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
         jPanel2.add(txtPlaca);
-        txtPlaca.setBounds(20, 40, 120, 30);
+        txtPlaca.setBounds(20, 40, 160, 30);
 
         lblNit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit.setText("PLACA VEHICULO");
+        lblNit.setText("PLACA");
         jPanel2.add(lblNit);
-        lblNit.setBounds(20, 20, 110, 14);
+        lblNit.setBounds(20, 20, 70, 14);
 
         lblNit3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit3.setText("VALOR M3");
         jPanel2.add(lblNit3);
-        lblNit3.setBounds(180, 140, 80, 14);
+        lblNit3.setBounds(190, 160, 90, 14);
         jPanel2.add(txtRecorrido);
-        txtRecorrido.setBounds(420, 40, 270, 30);
-
-        txtFecha.setDateFormatString("yyyy-MM-dd");
-        jPanel2.add(txtFecha);
-        txtFecha.setBounds(150, 40, 130, 30);
+        txtRecorrido.setBounds(440, 40, 250, 30);
 
         lblNit2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit2.setText("DIA");
         jPanel2.add(lblNit2);
-        lblNit2.setBounds(290, 20, 60, 14);
+        lblNit2.setBounds(310, 20, 60, 14);
 
         lblNit4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit4.setText("KM RECORRIDOS");
         jPanel2.add(lblNit4);
-        lblNit4.setBounds(20, 80, 110, 14);
+        lblNit4.setBounds(20, 100, 110, 14);
 
         lblNit5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit5.setText("UNIDAD");
         jPanel2.add(lblNit5);
-        lblNit5.setBounds(20, 140, 60, 14);
+        lblNit5.setBounds(20, 160, 60, 14);
 
         lblNit6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit6.setText("M3");
         jPanel2.add(lblNit6);
-        lblNit6.setBounds(180, 80, 70, 14);
+        lblNit6.setBounds(190, 100, 60, 14);
 
         txtUnidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -202,7 +243,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             }
         });
         jPanel2.add(txtUnidad);
-        txtUnidad.setBounds(20, 160, 130, 30);
+        txtUnidad.setBounds(20, 180, 150, 30);
 
         cmbValorM3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "400", "390" }));
         cmbValorM3.addActionListener(new java.awt.event.ActionListener() {
@@ -211,7 +252,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             }
         });
         jPanel2.add(cmbValorM3);
-        cmbValorM3.setBounds(180, 160, 120, 30);
+        cmbValorM3.setBounds(190, 180, 110, 30);
 
         txtM3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -219,7 +260,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             }
         });
         jPanel2.add(txtM3);
-        txtM3.setBounds(180, 100, 120, 30);
+        txtM3.setBounds(190, 120, 110, 30);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(null);
@@ -246,35 +287,31 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         txtTotal.setBounds(10, 10, 170, 40);
 
         jPanel2.add(jPanel1);
-        jPanel1.setBounds(330, 130, 190, 60);
+        jPanel1.setBounds(330, 150, 190, 60);
 
         lblNit1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit1.setText("TOTAL");
         jPanel2.add(lblNit1);
-        lblNit1.setBounds(330, 110, 50, 20);
+        lblNit1.setBounds(330, 130, 50, 20);
 
         jSeparator2.setForeground(new java.awt.Color(0, 51, 102));
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel2.add(jSeparator2);
-        jSeparator2.setBounds(540, 100, 10, 100);
+        jSeparator2.setBounds(540, 120, 10, 100);
 
         jSeparator3.setForeground(new java.awt.Color(0, 51, 102));
         jPanel2.add(jSeparator3);
-        jSeparator3.setBounds(20, 200, 670, 2);
+        jSeparator3.setBounds(20, 220, 670, 2);
 
         lblNit7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit7.setText("FECHA");
         jPanel2.add(lblNit7);
-        lblNit7.setBounds(150, 20, 60, 14);
-
-        cmbDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO" }));
-        jPanel2.add(cmbDia);
-        cmbDia.setBounds(290, 40, 120, 30);
+        lblNit7.setBounds(190, 20, 60, 14);
 
         lblNit8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit8.setText("RECORRIDO");
         jPanel2.add(lblNit8);
-        lblNit8.setBounds(420, 20, 80, 14);
+        lblNit8.setBounds(440, 20, 80, 14);
 
         txtKm.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -288,16 +325,16 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             }
         });
         jPanel2.add(txtKm);
-        txtKm.setBounds(20, 100, 120, 30);
+        txtKm.setBounds(20, 120, 150, 30);
 
         jSeparator4.setForeground(new java.awt.Color(0, 51, 102));
         jPanel2.add(jSeparator4);
-        jSeparator4.setBounds(310, 100, 380, 10);
+        jSeparator4.setBounds(310, 120, 380, 10);
 
         jSeparator5.setForeground(new java.awt.Color(0, 51, 102));
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel2.add(jSeparator5);
-        jSeparator5.setBounds(310, 100, 10, 100);
+        jSeparator5.setBounds(310, 120, 10, 100);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton1.setText("EDITAR");
@@ -307,7 +344,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton1);
-        jButton1.setBounds(560, 120, 130, 30);
+        jButton1.setBounds(560, 130, 130, 40);
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton2.setText("ELIMINAR");
@@ -317,7 +354,43 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton2);
-        jButton2.setBounds(560, 160, 130, 30);
+        jButton2.setBounds(560, 170, 130, 40);
+        jPanel2.add(txtFecha);
+        txtFecha.setBounds(190, 40, 110, 30);
+
+        btnBuscarPla.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        btnBuscarPla.setText("Buscar");
+        btnBuscarPla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarPlaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnBuscarPla);
+        btnBuscarPla.setBounds(110, 20, 70, 20);
+
+        btnEditarPlaca.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        btnEditarPlaca.setText("Editar placa");
+        btnEditarPlaca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarPlacaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnEditarPlaca);
+        btnEditarPlaca.setBounds(20, 70, 160, 20);
+
+        cmbDias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO" }));
+        jPanel2.add(cmbDias);
+        cmbDias.setBounds(310, 40, 120, 30);
+
+        btnBuscarPla1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        btnBuscarPla1.setText("Buscar");
+        btnBuscarPla1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarPla1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnBuscarPla1);
+        btnBuscarPla1.setBounds(620, 20, 70, 20);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel4.setLayout(null);
@@ -346,15 +419,29 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         jPanel5.add(jButton3);
         jButton3.setBounds(20, 10, 70, 30);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbViajes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Title 2", "Title 3", "Title 4"
+                "ID", "PLACA", "FECHA", "DIA", "RECORRIDO", "KM RECORRIDOS", "M3", "UNIDAD", "VALOR M3", "TOTAL", "ID_VEHICULO"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, true, true, true, true, true, true, true, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbViajes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbViajes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbViajesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbViajes);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -371,16 +458,19 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 25, Short.MAX_VALUE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 711, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(jPanel3Layout.createSequentialGroup()
-                                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtIdVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtIdViaje, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(txtIdVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 711, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 27, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -388,21 +478,22 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtIdVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addComponent(txtIdViaje, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -413,7 +504,9 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -456,6 +549,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             int m3 = Integer.parseInt(txtM3.getText());
             //int km = Integer.parseInt(txtKm.getText());
             int total = unidad * valor_m3 * m3 * km;
+            txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
             txtTotal.setText("" + total);
         }
 
@@ -464,7 +558,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
 
     private void txtUnidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnidadKeyReleased
 
-        String dato = txtUnidad.getText();
+         String dato = txtUnidad.getText();
 
         if (dato.equals("") == false && dato.matches("[0-9]*")) {
             int unidad = Integer.parseInt(dato);
@@ -474,9 +568,10 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             int m3 = Integer.parseInt(txtM3.getText());
             int km = Integer.parseInt(txtKm.getText());
             int total = unidad * valor_m3 * m3 * km;
+            txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
             txtTotal.setText("" + total);
         }
-
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUnidadKeyReleased
 
@@ -492,6 +587,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             //int m3 = Integer.parseInt(txtM3.getText());
             int km = Integer.parseInt(txtKm.getText());
             int total = unidad * valor_m3 * m3 * km;
+            txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
             txtTotal.setText("" + total);
         }
 
@@ -520,15 +616,17 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             int m3 = Integer.parseInt(txtM3.getText());
             int km = Integer.parseInt(txtKm.getText());
             int total = unidad * valor_m3 * m3 * km;
+            txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
             txtTotal.setText("" + total);
         }
+        
         
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbValorM3ActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
-        /*
+      /*
         try {
             String guardar = txtBuscar.getText();
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
@@ -556,40 +654,40 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "error\n" + ex.getMessage());
         }
         */
+       
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        /*
-        if(txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()){
+       
+        if(txtIdViaje.getText().isEmpty() || txtIdVehiculo.getText().isEmpty() || txtPlaca.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
         }else{
             try {
-                propietarios pro = new propietarios();
-                pro.setId_propietario(Integer.parseInt(txtIdPropietario.getText()));
-                pro.setIdentificacion(txtIdentificacion.getText().toUpperCase());
-                pro.setNombre_propietario(txtNombrePropietario.getText().toUpperCase());
-                pro.setDepartamento(txtDepartamento.getText().toUpperCase());
-                pro.setMunicipio(txtMunicipio.getText().toUpperCase());
-                pro.setDireccion(txtDireccion.getText().toUpperCase());
+                viajes vi = new viajes();
+                vi.setId_viaje(Integer.parseInt(txtIdViaje.getText()));
+                vi.setId_vehiculo(Integer.parseInt(txtIdVehiculo.getText()));
+                vi.setPlaca(txtPlaca.getText().toUpperCase());
+                vi.setFecha(txtFecha.getText().toUpperCase());
+                vi.setDia(cmbDias.getSelectedItem().toString());
+                vi.setRecorrido(txtRecorrido.getText().toUpperCase());
+                vi.setKm(Integer.parseInt(txtKm.getText()));
+                vi.setM3(Integer.parseInt(txtM3.getText()));
+                vi.setUnidad(Integer.parseInt(txtUnidad.getText()));
+                vi.setValor_m3(Integer.parseInt(cmbValorM3.getSelectedItem().toString()));
+                vi.setTotal(Integer.parseInt(txtTotal.getText()));
 
-                pro.setFecha_ingreso(txtFechaIngreso.getText().toUpperCase());
-
-                pro.setEmail(txtEmail.getText().toUpperCase());
-                pro.setTelefono(txtTelefono.getText().toUpperCase());
-                pro.setEstado(cmbEstado.getSelectedItem().toString());
-
-                dbPropietario.EditarPropietario(pro);
+                dbviaje.EditarViaje(vi);
 
                 limpiar();
-                LimpiarPropietarios();
-                listarPropietarios();
+                LimpiarViajes();
+                listarViajes();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }
-        */
+       
         
 
         // TODO add your handling code here:
@@ -597,38 +695,225 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        /*
-        if(txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()){
+
+        if(txtIdViaje.getText().isEmpty() || txtIdVehiculo.getText().isEmpty() || txtPlaca.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
         }else{
             try {
-                propietarios pro = new propietarios();
-                pro.setId_propietario(Integer.parseInt(txtIdPropietario.getText()));
+                viajes vi = new viajes();
+                vi.setId_viaje(Integer.parseInt(txtIdViaje.getText()));
 
-                dbPropietario.EliminarPropietario(pro);
+                dbviaje.EliminarViaje(vi);
 
                 limpiar();
-                LimpiarPropietarios();
-                listarPropietarios();
+                LimpiarViajes();
+                listarViajes();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }
-        */
+  
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-        /*
+   
         limpiar();
-        LimpiarPropietarios();
-        listarPropietarios();
-        */
+        LimpiarViajes();
+        listarViajes();
+    
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnBuscarPlaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlaActionPerformed
+
+        try {
+            String guardar = txtPlaca.getText();
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("Select id_vehiculo from vehiculos where placa = ?");
+            pst.setString(1, guardar);
+            //pst.setString(1, CMBID.getName());
+            ResultSet rs = pst.executeQuery();
+            //txtConductor.setText("");
+            if (rs.next()) {
+
+                viajes vi = new viajes();
+                vi.setId_vehiculo(rs.getInt("id_vehiculo"));
+                //txtIdConductor.setText(""+con);
+                txtIdVehiculo.setText(rs.getString("id_vehiculo").trim());
+                //autoCompleteConductor();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe el vehiculo");
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "error\n" + ex.getMessage());
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarPlaActionPerformed
+
+    private void btnEditarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPlacaActionPerformed
+
+        txtPlaca.setEnabled(true);
+        btnBuscarPla.setVisible(true);
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarPlacaActionPerformed
+
+    private void tbViajesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbViajesMouseClicked
+
+         int seleccion = tbViajes.getSelectedRow();
+
+        txtIdViaje.setText(String.valueOf(tbViajes.getValueAt(seleccion, 0)));
+        txtPlaca.setText(String.valueOf(tbViajes.getValueAt(seleccion, 1)));
+        txtFecha.setText(String.valueOf(tbViajes.getValueAt(seleccion, 2)));
+        
+        String dia = String.valueOf(tbViajes.getValueAt(seleccion, 3));
+        try {
+            if (dia.equals("LUNES")) {
+                cmbDias.setSelectedIndex(0);
+            }
+            if (dia.equals("MARTES")) {
+                cmbDias.setSelectedIndex(1);
+            }
+            if (dia.equals("MIERCOLES")) {
+                cmbDias.setSelectedIndex(2);
+            }
+            if (dia.equals("JUEVES")) {
+                cmbDias.setSelectedIndex(3);
+            }
+            if (dia.equals("VIERNES")) {
+                cmbDias.setSelectedIndex(4);
+            }
+            if (dia.equals("SABADO")) {
+                cmbDias.setSelectedIndex(5);
+            }
+            if (dia.equals("DOMINGO")) {
+                cmbDias.setSelectedIndex(6);
+            }
+        } catch (Exception e) {
+            System.out.println("error:" + e);
+        }
+        
+        txtRecorrido.setText(String.valueOf(tbViajes.getValueAt(seleccion, 4)));  
+        txtKm.setText(String.valueOf(tbViajes.getValueAt(seleccion, 5)));        
+        txtM3.setText(String.valueOf(tbViajes.getValueAt(seleccion, 6)));
+        txtUnidad.setText(String.valueOf(tbViajes.getValueAt(seleccion, 7))); 
+        
+        String valor_m3 = String.valueOf(tbViajes.getValueAt(seleccion, 8));
+        try {
+            if (valor_m3.equals("400")) {
+                cmbValorM3.setSelectedIndex(0);
+            }
+            if (valor_m3.equals("390")) {
+                cmbValorM3.setSelectedIndex(1);
+            }
+        } catch (Exception e) {
+            System.out.println("error:" + e);
+        }
+        
+        txtTotal.setText(String.valueOf(tbViajes.getValueAt(seleccion, 9)));
+        txtIdVehiculo.setText(String.valueOf(tbViajes.getValueAt(seleccion, 10)));
+
+        /*
+        try {
+            String conductor = (String.valueOf(tbVehiculos.getValueAt(seleccion, 11)));
+            int dato = Integer.parseInt(conductor);
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("Select nombre from conductores where id_conductor = ?");
+            pst.setInt(1, dato);
+            //pst.setString(1, CMBID.getName());
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                txtConductor.setText(rs.getString("nombre"));
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe el usuario");
+            }
+            cn.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
+        try {
+            String conductor = (String.valueOf(tbVehiculos.getValueAt(seleccion, 12)));
+            int dato2 = Integer.parseInt(conductor);
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("Select nombre_propietario from propietarios where id_propietario = ?");
+            pst.setInt(1, dato2);
+            //pst.setString(1, CMBID.getName());
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                txtPropietario.setText(rs.getString("nombre_propietario"));
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe el usuario");
+            }
+            cn.close();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        */
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbViajesMouseClicked
+
+    private void btnBuscarPla1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPla1ActionPerformed
+
+        if(txtIdViaje.getText().isEmpty() || txtIdVehiculo.getText().isEmpty() || txtPlaca.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
+        }else{
+            try {
+            String guardar = txtRecorrido.getText();
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("Select km_recorridos from recorridos where recorrido = ?");
+            pst.setString(1, guardar);
+            //pst.setString(1, CMBID.getName());
+            ResultSet rs = pst.executeQuery();
+            //txtConductor.setText("");
+            if (rs.next()) {
+
+                viajes vi = new viajes();
+                vi.setKm(rs.getInt("km_recorridos"));
+                //txtIdConductor.setText(""+con);
+                txtKm.setText(rs.getString("km_recorridos").trim());
+
+                String dato = txtKm.getText();
+
+                if (dato.equals("") == false && dato.matches("[0-9]*")) {
+                    int km = Integer.parseInt(dato);
+
+                    int unidad = Integer.parseInt(txtUnidad.getText());
+                    int valor_m3 = Integer.parseInt(cmbValorM3.getSelectedItem().toString());
+                    int m3 = Integer.parseInt(txtM3.getText());
+                    //int km = Integer.parseInt(txtKm.getText());
+                    int total = unidad * valor_m3 * m3 * km;
+                    txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
+                    txtTotal.setText("" + total);
+                }
+
+                //autoCompleteConductor();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe el recorrido");
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "error\n" + ex.getMessage());
+        }
+        }
+        
+        
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarPla1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -670,7 +955,10 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JComboBox<String> cmbDia;
+    private javax.swing.JButton btnBuscarPla;
+    private javax.swing.JButton btnBuscarPla1;
+    private javax.swing.JButton btnEditarPlaca;
+    private javax.swing.JComboBox<String> cmbDias;
     private javax.swing.JComboBox<String> cmbValorM3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -687,7 +975,6 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblNit;
     private javax.swing.JLabel lblNit1;
     private javax.swing.JLabel lblNit2;
@@ -697,9 +984,11 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
     private javax.swing.JLabel lblNit6;
     private javax.swing.JLabel lblNit7;
     private javax.swing.JLabel lblNit8;
+    private javax.swing.JTable tbViajes;
     private javax.swing.JTextField txtBuscar;
-    private com.toedter.calendar.JDateChooser txtFecha;
+    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtIdVehiculo;
+    private javax.swing.JTextField txtIdViaje;
     private javax.swing.JTextField txtKm;
     private javax.swing.JTextField txtM3;
     private javax.swing.JTextField txtPlaca;

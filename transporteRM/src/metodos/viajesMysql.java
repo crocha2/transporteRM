@@ -27,7 +27,7 @@ import principales.viajes;
  */
 public class viajesMysql {
     
-    public ArrayList<viajes> ListPropietario() {
+    public ArrayList<viajes> ListViajes() {
         ArrayList<viajes> viaje = new ArrayList();
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
@@ -62,7 +62,7 @@ public class viajesMysql {
     public void insertarViaje(viajes vi) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
-            PreparedStatement pst = cn.prepareStatement("INSERT INTO viajes(fecha, placa, dia, recorrido, unidad, valor_m3, m3, km, total, id_vehiculo) VALUES (?,?,?,?,?,?,?,?,?)");
+            PreparedStatement pst = cn.prepareStatement("INSERT INTO viajes(fecha, placa, dia, recorrido, unidad, valor_m3, m3, km, total, id_vehiculo) VALUES (?,?,?,?,?,?,?,?,?,?)");
             pst.setString(1, vi.getFecha());
             pst.setString(2, vi.getPlaca());
             pst.setString(3, vi.getDia());
