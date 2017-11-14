@@ -9,17 +9,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import metodos.descuentosMysql;
 import metodos.propietariosMysql;
+import principales.descuentos;
 import principales.propietarios;
 
 /**
  *
  * @author user
  */
-public class Nuevo_Descuento extends javax.swing.JFrame {
+public final class Nuevo_Descuento extends javax.swing.JFrame {
 
-    ArrayList<propietarios> propietario;
-    propietariosMysql dbPropietario = new propietariosMysql();
+    ArrayList<descuentos> descuento;
+    descuentosMysql dbDescuentos = new descuentosMysql();
 
     /**
      * Creates new form Nuevo_Propietario
@@ -27,20 +30,42 @@ public class Nuevo_Descuento extends javax.swing.JFrame {
     public Nuevo_Descuento() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - NUEVO PROPIETARIO");
+        //this.setResizable(false);
+        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - DESCUENTOS");
+        listarDescuentos();
+        
+        txtPrecio.setText("1");
+        txtUnidad.setText("1");
+        
+        txtIdDescuento.setEnabled(false);
     }
 
-    public void limpiar() {
-        txtIdentificacion.setText("");
-        txtNombrePropietario.setText("");
-        txtDepartamento.setText("");
-        txtMunicipio.setText("");
-        txtDireccion.setText("");
-        txtEmail.setText("");
-        txtTelefono.setText("");
-        txtIdentificacion.requestFocus();
+    public void limpiar(){
+        txtFecha2.setText("");
+        txtPrecio.setText("1");
+        txtUnidad.setText("1");
+        txtTotal.setText("");
+        areaDescripcion.setText("");
+        txtFecha.setVisible(true);
+        txtFecha2.setVisible(false);
+        txtUnidad.requestFocus();
+        cmbUnidad.setSelectedIndex(0);
+        
+    }
+    
+    public void listarDescuentos() {
+        descuento = dbDescuentos.ListDescuentos();
+        DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
+        descuento.forEach((des) -> {
+            tb.addRow(new Object[]{des.getId_descuento(),des.getFecha(),des.getDescripcion(),des.getUnidad(),des.getPrecio(),des.getTotal()});
+        });
+    }
 
+    public void LimpiarDescuentos() {
+        DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
+        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
+            tb.removeRow(i);
+        }
     }
 
     /**
@@ -55,108 +80,217 @@ public class Nuevo_Descuento extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        txtIdentificacion = new javax.swing.JTextField();
         lblNit = new javax.swing.JLabel();
         lblNit1 = new javax.swing.JLabel();
-        txtNombrePropietario = new javax.swing.JTextField();
-        lblNit2 = new javax.swing.JLabel();
-        txtDepartamento = new javax.swing.JTextField();
+        lblUnidad = new javax.swing.JLabel();
+        txtUnidad = new javax.swing.JTextField();
         lblNit3 = new javax.swing.JLabel();
-        txtMunicipio = new javax.swing.JTextField();
-        lblNit4 = new javax.swing.JLabel();
-        txtDireccion = new javax.swing.JTextField();
-        lblNit5 = new javax.swing.JLabel();
-        txtFechaIngreso = new com.toedter.calendar.JDateChooser();
-        lblNit6 = new javax.swing.JLabel();
-        txtEmail = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
+        txtFecha = new com.toedter.calendar.JDateChooser();
         lblNit7 = new javax.swing.JLabel();
-        txtTelefono = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        areaDescripcion = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        txtTotal = new javax.swing.JTextField();
+        jSeparator2 = new javax.swing.JSeparator();
+        jPanel4 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        txtFecha2 = new javax.swing.JTextField();
+        cmbUnidad = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbDescuentos = new javax.swing.JTable();
+        txtIdDescuento = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(255, 153, 153));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel2.setText("PROPIETARIOS");
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("DESCUENTOS");
 
-        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
-        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
+        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel2.setLayout(null);
+
+        lblNit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit.setText("FECHA");
+        jPanel2.add(lblNit);
+        lblNit.setBounds(20, 10, 110, 14);
+
+        lblNit1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit1.setText("DESCRIPCION");
+        jPanel2.add(lblNit1);
+        lblNit1.setBounds(20, 80, 100, 14);
+
+        lblUnidad.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblUnidad.setText("UNIDAD");
+        jPanel2.add(lblUnidad);
+        lblUnidad.setBounds(200, 10, 80, 14);
+
+        txtUnidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtUnidadKeyReleased(evt);
+            }
+        });
+        jPanel2.add(txtUnidad);
+        txtUnidad.setBounds(200, 30, 140, 30);
+
+        lblNit3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit3.setText("PRECIO");
+        jPanel2.add(lblNit3);
+        lblNit3.setBounds(370, 10, 70, 14);
+
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyReleased(evt);
+            }
+        });
+        jPanel2.add(txtPrecio);
+        txtPrecio.setBounds(370, 30, 130, 30);
+
+        txtFecha.setDateFormatString("yyyy-MM-dd");
+        jPanel2.add(txtFecha);
+        txtFecha.setBounds(20, 30, 150, 30);
+
+        lblNit7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit7.setText("TOTAL");
+        jPanel2.add(lblNit7);
+        lblNit7.setBounds(350, 100, 60, 14);
+
+        areaDescripcion.setColumns(20);
+        areaDescripcion.setRows(5);
+        jScrollPane1.setViewportView(areaDescripcion);
+
+        jPanel2.add(jScrollPane1);
+        jScrollPane1.setBounds(20, 100, 320, 70);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.setLayout(null);
+
+        txtTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtTotal.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalActionPerformed(evt);
+            }
+        });
+        txtTotal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTotalKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtTotalKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTotalKeyTyped(evt);
+            }
+        });
+        jPanel1.add(txtTotal);
+        txtTotal.setBounds(10, 10, 130, 30);
+
+        jPanel2.add(jPanel1);
+        jPanel1.setBounds(350, 120, 150, 50);
+        jPanel2.add(jSeparator2);
+        jSeparator2.setBounds(20, 70, 480, 10);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel4.setLayout(null);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setText("REGISTRAR");
+        jButton1.setText("...");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel4.add(jButton1);
+        jButton1.setBounds(400, 10, 70, 32);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel2.setLayout(null);
-        jPanel2.add(txtIdentificacion);
-        txtIdentificacion.setBounds(20, 40, 230, 30);
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton2.setText("EDITAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton2);
+        jButton2.setBounds(130, 10, 110, 32);
 
-        lblNit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit.setText("IDENTIFICACION");
-        jPanel2.add(lblNit);
-        lblNit.setBounds(20, 20, 110, 14);
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton3.setText("REGISTRAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton3);
+        jButton3.setBounds(10, 10, 110, 32);
 
-        lblNit1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit1.setText("NOMBRE PROPIETARIO");
-        jPanel2.add(lblNit1);
-        lblNit1.setBounds(270, 20, 130, 14);
-        jPanel2.add(txtNombrePropietario);
-        txtNombrePropietario.setBounds(270, 40, 230, 30);
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton4.setText("ELIMINAR");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton4);
+        jButton4.setBounds(250, 10, 110, 32);
 
-        lblNit2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit2.setText("DEPARTAMENTO");
-        jPanel2.add(lblNit2);
-        lblNit2.setBounds(20, 80, 110, 14);
-        jPanel2.add(txtDepartamento);
-        txtDepartamento.setBounds(20, 100, 230, 30);
+        jPanel2.add(jPanel4);
+        jPanel4.setBounds(20, 190, 480, 50);
+        jPanel2.add(jSeparator3);
+        jSeparator3.setBounds(20, 180, 480, 10);
+        jPanel2.add(txtFecha2);
+        txtFecha2.setBounds(20, 30, 150, 30);
 
-        lblNit3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit3.setText("MUNICIPIO");
-        jPanel2.add(lblNit3);
-        lblNit3.setBounds(270, 80, 110, 14);
-        jPanel2.add(txtMunicipio);
-        txtMunicipio.setBounds(270, 100, 230, 30);
+        cmbUnidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNIDAD", "VALOR" }));
+        cmbUnidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbUnidadActionPerformed(evt);
+            }
+        });
+        jPanel2.add(cmbUnidad);
+        cmbUnidad.setBounds(400, 80, 100, 20);
 
-        lblNit4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit4.setText("DIRECCION");
-        jPanel2.add(lblNit4);
-        lblNit4.setBounds(20, 140, 110, 14);
-        jPanel2.add(txtDireccion);
-        txtDireccion.setBounds(20, 160, 230, 30);
+        tbDescuentos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        lblNit5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit5.setText("FECHA DE INGRESO");
-        jPanel2.add(lblNit5);
-        lblNit5.setBounds(270, 140, 130, 14);
-
-        txtFechaIngreso.setDateFormatString("yyyy-MM-dd");
-        jPanel2.add(txtFechaIngreso);
-        txtFechaIngreso.setBounds(270, 160, 230, 30);
-
-        lblNit6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit6.setText("EMAIL");
-        jPanel2.add(lblNit6);
-        lblNit6.setBounds(20, 200, 110, 14);
-        jPanel2.add(txtEmail);
-        txtEmail.setBounds(20, 220, 230, 30);
-
-        lblNit7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit7.setText("TELEFONO");
-        jPanel2.add(lblNit7);
-        lblNit7.setBounds(270, 200, 110, 14);
-        jPanel2.add(txtTelefono);
-        txtTelefono.setBounds(270, 220, 230, 30);
+            },
+            new String [] {
+                "ID", "FECHA", "DESCRIPCION", "UNIDAD", "PRECIO", "TOTAL"
+            }
+        ));
+        tbDescuentos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tbDescuentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbDescuentosMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbDescuentos);
+        if (tbDescuentos.getColumnModel().getColumnCount() > 0) {
+            tbDescuentos.getColumnModel().getColumn(0).setHeaderValue("ID");
+            tbDescuentos.getColumnModel().getColumn(1).setHeaderValue("FECHA");
+            tbDescuentos.getColumnModel().getColumn(2).setHeaderValue("DESCRIPCION");
+            tbDescuentos.getColumnModel().getColumn(3).setHeaderValue("UNIDAD");
+            tbDescuentos.getColumnModel().getColumn(4).setHeaderValue("PRECIO");
+            tbDescuentos.getColumnModel().getColumn(5).setHeaderValue("TOTAL");
+        }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(158, 158, 158))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -166,11 +300,10 @@ public class Nuevo_Descuento extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(66, 66, 66)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtIdDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -181,9 +314,11 @@ public class Nuevo_Descuento extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIdDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -195,7 +330,9 @@ public class Nuevo_Descuento extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -203,40 +340,177 @@ public class Nuevo_Descuento extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        if (txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()) {
+        limpiar();
+        LimpiarDescuentos();
+        listarDescuentos();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
+
+        // total();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActionPerformed
+
+    private void txtTotalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTotalKeyPressed
+
+        //total();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalKeyPressed
+
+    private void txtTotalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTotalKeyReleased
+
+        //total();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalKeyReleased
+
+    private void txtTotalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTotalKeyTyped
+
+        //total();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalKeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        if (txtTotal.getText().isEmpty() || areaDescripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe gestionar el formulario");
         } else {
-            try {
-                propietarios pro = new propietarios();
-                pro.setIdentificacion(txtIdentificacion.getText().toUpperCase());
-                pro.setNombre_propietario(txtNombrePropietario.getText().toUpperCase());
-                pro.setDepartamento(txtDepartamento.getText().toUpperCase());
-                pro.setMunicipio(txtMunicipio.getText().toUpperCase());
-                pro.setDireccion(txtDireccion.getText().toUpperCase());
-
-                String formato = txtFechaIngreso.getDateFormatString();
-                Date date = txtFechaIngreso.getDate();
+            if(cmbUnidad.getSelectedItem().toString().equals("VALOR")){
+                lblUnidad.setVisible(false);
+                txtUnidad.setVisible(false);
+                try {
+                descuentos des = new descuentos();
+                
+                String formato = txtFecha.getDateFormatString();
+                Date date = txtFecha.getDate();
                 SimpleDateFormat sdf = new SimpleDateFormat(formato);
                 String dato = String.valueOf(sdf.format(date));
-                pro.setFecha_ingreso(dato);
+                des.setFecha(dato);
+                
+                des.setDescripcion(areaDescripcion.getText().toUpperCase());
+                des.setUnidad(1);
+                des.setPrecio(Integer.parseInt(txtPrecio.getText()));
+                des.setTotal(Integer.parseInt(txtTotal.getText()));
 
-                pro.setEmail(txtEmail.getText().toUpperCase());
-                pro.setTelefono(txtTelefono.getText().toUpperCase());
-                pro.setEstado("ACTIVO");
+                dbDescuentos.insertarDescuento(des);
 
-                dbPropietario.insertarPropietario(pro);
-
-                Tabla_Propietarios obj = new Tabla_Propietarios();
-                obj.setVisible(true);
-                dispose();
+                limpiar();
+                LimpiarDescuentos();
+                listarDescuentos();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
-        }
+            }else{
+                try {
+                descuentos des = new descuentos();
+                
+                String formato = txtFecha.getDateFormatString();
+                Date date = txtFecha.getDate();
+                SimpleDateFormat sdf = new SimpleDateFormat(formato);
+                String dato = String.valueOf(sdf.format(date));
+                des.setFecha(dato);
+                
+                des.setDescripcion(areaDescripcion.getText().toUpperCase());
+                des.setUnidad(Integer.parseInt(txtUnidad.getText()));
+                des.setPrecio(Integer.parseInt(txtPrecio.getText()));
+                des.setTotal(Integer.parseInt(txtTotal.getText()));
 
+                dbDescuentos.insertarDescuento(des);
+
+                limpiar();
+                LimpiarDescuentos();
+                listarDescuentos();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+            }
+            
+            
+        }
+        
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void cmbUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbUnidadActionPerformed
+
+        String dato = cmbUnidad.getSelectedItem().toString();
+        
+        if(dato.equals("VALOR")){
+            lblUnidad.setVisible(false);
+            txtUnidad.setVisible(false);
+        }else{
+            lblUnidad.setVisible(true);
+            txtUnidad.setVisible(true);
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbUnidadActionPerformed
+
+    private void txtUnidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnidadKeyReleased
+
+        String dato = txtUnidad.getText();
+
+        if (dato.equals("") == false && dato.matches("[0-9]*")) {
+            int unidad = Integer.parseInt(dato);
+
+            //int unidad = Integer.parseInt(txtUnidad.getText());
+            int precio = Integer.parseInt(txtPrecio.getText());
+       
+            int total = unidad * precio;
+            txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
+            txtTotal.setText("" + total);
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUnidadKeyReleased
+
+    private void txtPrecioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyReleased
+
+        String dato = txtPrecio.getText();
+
+        if (dato.equals("") == false && dato.matches("[0-9]*")) {
+            
+            int precio = Integer.parseInt(dato);
+            int unidad = Integer.parseInt(txtUnidad.getText());
+       
+            int total = unidad * precio;
+            txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
+            txtTotal.setText("" + total);
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioKeyReleased
+
+    private void tbDescuentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDescuentosMouseClicked
+
+        txtFecha.setVisible(false);
+        txtFecha2.setVisible(true);
+        lblUnidad.setVisible(true);
+        txtUnidad.setVisible(true);
+        
+        int seleccion = tbDescuentos.getSelectedRow();
+
+        txtIdDescuento.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 0)));
+        txtFecha2.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 1)));
+        areaDescripcion.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 2)));
+        txtUnidad.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 3)));
+        txtPrecio.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 4)));
+        txtTotal.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 5)));
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbDescuentosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -275,26 +549,33 @@ public class Nuevo_Descuento extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaDescripcion;
+    private javax.swing.JComboBox<String> cmbUnidad;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JLabel lblNit;
     private javax.swing.JLabel lblNit1;
-    private javax.swing.JLabel lblNit2;
     private javax.swing.JLabel lblNit3;
-    private javax.swing.JLabel lblNit4;
-    private javax.swing.JLabel lblNit5;
-    private javax.swing.JLabel lblNit6;
     private javax.swing.JLabel lblNit7;
-    private javax.swing.JTextField txtDepartamento;
-    private javax.swing.JTextField txtDireccion;
-    private javax.swing.JTextField txtEmail;
-    private com.toedter.calendar.JDateChooser txtFechaIngreso;
-    private javax.swing.JTextField txtIdentificacion;
-    private javax.swing.JTextField txtMunicipio;
-    private javax.swing.JTextField txtNombrePropietario;
-    private javax.swing.JTextField txtTelefono;
+    private javax.swing.JLabel lblUnidad;
+    private javax.swing.JTable tbDescuentos;
+    private com.toedter.calendar.JDateChooser txtFecha;
+    private javax.swing.JTextField txtFecha2;
+    private javax.swing.JTextField txtIdDescuento;
+    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtTotal;
+    private javax.swing.JTextField txtUnidad;
     // End of variables declaration//GEN-END:variables
 }
