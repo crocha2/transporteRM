@@ -57,8 +57,7 @@ public class Principal_Admin extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem20 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
@@ -183,9 +182,19 @@ public class Principal_Admin extends javax.swing.JFrame {
         jMenu3.setText("Viajes");
 
         jMenuItem18.setText("Registrar");
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem18ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem18);
 
         jMenuItem19.setText("Gestionar");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem19);
 
         jMenuBar1.add(jMenu3);
@@ -194,14 +203,11 @@ public class Principal_Admin extends javax.swing.JFrame {
 
         jMenu8.setText("Liquidacion");
 
-        jMenuItem11.setText("Semanal");
+        jMenuItem11.setText("Crear");
         jMenu8.add(jMenuItem11);
 
-        jMenuItem13.setText("Quincenal");
-        jMenu8.add(jMenuItem13);
-
-        jMenuItem12.setText("Mensual");
-        jMenu8.add(jMenuItem12);
+        jMenuItem20.setText("Gestionar");
+        jMenu8.add(jMenuItem20);
 
         jMenu4.add(jMenu8);
 
@@ -340,6 +346,22 @@ public class Principal_Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+
+        Nuevo_Viaje obj = new Nuevo_Viaje();
+        obj.setVisible(true);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+
+        Tabla_Viajes obj = new Tabla_Viajes();
+        obj.setVisible(true);
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -392,8 +414,6 @@ public class Principal_Admin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
@@ -401,6 +421,7 @@ public class Principal_Admin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem18;
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

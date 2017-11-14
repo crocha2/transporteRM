@@ -146,11 +146,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registrar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem18ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem19">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gestionar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem19ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -166,17 +172,12 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem11">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Semanal"/>
+                    <Property name="text" type="java.lang.String" value="Crear"/>
                   </Properties>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem20">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Quincenal"/>
-                  </Properties>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem12">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Mensual"/>
+                    <Property name="text" type="java.lang.String" value="Gestionar"/>
                   </Properties>
                 </MenuItem>
               </SubComponents>

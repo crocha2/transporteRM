@@ -39,11 +39,13 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         //this.setResizable(false);
-        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - TABLA VIAJE");
+        this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - TABLA DE VIAJE");
         txtIdVehiculo.setEnabled(false);
+        txtIdViaje.setEnabled(false);
+        txtTotal.setEnabled(false);
         autoCompletePlaca();
         autoCompleteRecorridos();
-        txtTotal.setDisabledTextColor(java.awt.Color.GREEN);
+        txtTotal.setDisabledTextColor(java.awt.Color.BLUE);
         
         txtPlaca.setEnabled(false);
         btnBuscarPla.setVisible(false);
@@ -63,21 +65,23 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
     
     public void limpiar() {
         
+        EnCero();
         txtPlaca.setEnabled(false);
         btnBuscarPla.setVisible(false);
         txtPlaca.setText("");
         txtFecha.setText("");
         cmbDias.setSelectedIndex(0);
         txtRecorrido.setText("");
-        txtKm.setText("");
-        txtM3.setText("");
-        txtUnidad.setText("");
+        //txtKm.setText("");
+        //txtM3.setText("");
+        //txtUnidad.setText("");
         cmbValorM3.setSelectedIndex(0);
         
+        txtTotal.setText("");
         txtIdViaje.setText("");
         txtIdVehiculo.setText("");
-        txtPlaca.requestFocus();
-        EnCero();
+        txtFecha.requestFocus();
+        
     }
     
     public void listarViajes() {
@@ -667,7 +671,6 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
             try {
                 viajes vi = new viajes();
                 vi.setId_viaje(Integer.parseInt(txtIdViaje.getText()));
-                vi.setId_vehiculo(Integer.parseInt(txtIdVehiculo.getText()));
                 vi.setPlaca(txtPlaca.getText().toUpperCase());
                 vi.setFecha(txtFecha.getText().toUpperCase());
                 vi.setDia(cmbDias.getSelectedItem().toString());
@@ -677,6 +680,7 @@ public final class Tabla_Viajes extends javax.swing.JFrame {
                 vi.setUnidad(Integer.parseInt(txtUnidad.getText()));
                 vi.setValor_m3(Integer.parseInt(cmbValorM3.getSelectedItem().toString()));
                 vi.setTotal(Integer.parseInt(txtTotal.getText()));
+                vi.setId_vehiculo(Integer.parseInt(txtIdVehiculo.getText()));
 
                 dbviaje.EditarViaje(vi);
 
