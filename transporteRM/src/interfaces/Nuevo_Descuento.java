@@ -11,9 +11,7 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import metodos.descuentosMysql;
-import metodos.propietariosMysql;
 import principales.descuentos;
-import principales.propietarios;
 
 /**
  *
@@ -343,6 +341,7 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         limpiar();
         LimpiarDescuentos();
         listarDescuentos();
+        cmbUnidad.setVisible(true);
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -373,6 +372,33 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTotalKeyTyped
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        if(txtIdDescuento.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
+        }else{
+            try {
+                descuentos des = new descuentos();
+                
+                des.setFecha(txtFecha2.getText());
+                
+                des.setDescripcion(areaDescripcion.getText().toUpperCase());
+                des.setUnidad(Integer.parseInt(txtUnidad.getText()));
+                des.setPrecio(Integer.parseInt(txtPrecio.getText()));
+                des.setTotal(Integer.parseInt(txtTotal.getText()));
+                des.setId_descuento(Integer.parseInt(txtIdDescuento.getText()));
+
+                dbDescuentos.EditarDescuento(des);
+
+                limpiar();
+                LimpiarDescuentos();
+                listarDescuentos();
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+            
+        }
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -404,7 +430,7 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
                 LimpiarDescuentos();
                 listarDescuentos();
 
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
             }else{
@@ -428,7 +454,7 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
                 LimpiarDescuentos();
                 listarDescuentos();
 
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
             }
@@ -440,6 +466,27 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        if(txtIdDescuento.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un registro");
+        }else{
+            try {
+                descuentos des = new descuentos();
+                
+                des.setId_descuento(Integer.parseInt(txtIdDescuento.getText()));
+
+                dbDescuentos.EliminarDescuento(des);
+
+                limpiar();
+                LimpiarDescuentos();
+                listarDescuentos();
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+            
+        }
+
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -499,6 +546,7 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         txtFecha2.setVisible(true);
         lblUnidad.setVisible(true);
         txtUnidad.setVisible(true);
+        cmbUnidad.setVisible(false);
         
         int seleccion = tbDescuentos.getSelectedRow();
 

@@ -13,6 +13,8 @@ public class liquidaciones {
     
     int id_liquidacion;
     String nombre;
+    String conductor;
+    String placa;
     String fecha;
     String fecha_inicio;
     String fecha_fin;
@@ -27,9 +29,11 @@ public class liquidaciones {
     public liquidaciones() {
     }
 
-    public liquidaciones(int id_liquidacion, String nombre, String fecha, String fecha_inicio, String fecha_fin, int sub_total, int gran_total, int id_desciento, int id_cliente, int id_viaje, int id_vehiculo, String estado) {
+    public liquidaciones(int id_liquidacion, String nombre, String conductor, String placa, String fecha, String fecha_inicio, String fecha_fin, int sub_total, int gran_total, int id_desciento, int id_cliente, int id_viaje, int id_vehiculo, String estado) {
         this.id_liquidacion = id_liquidacion;
         this.nombre = nombre;
+        this.conductor = conductor;
+        this.placa = placa;
         this.fecha = fecha;
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
@@ -56,6 +60,22 @@ public class liquidaciones {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getConductor() {
+        return conductor;
+    }
+
+    public void setConductor(String conductor) {
+        this.conductor = conductor;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
     public String getFecha() {
@@ -137,6 +157,7 @@ public class liquidaciones {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
     
     
     
