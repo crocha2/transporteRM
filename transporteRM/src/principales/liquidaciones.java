@@ -12,6 +12,7 @@ package principales;
 public class liquidaciones {
     
     int id_liquidacion;
+    String numero;
     String nombre;
     String conductor;
     String placa;
@@ -29,8 +30,9 @@ public class liquidaciones {
     public liquidaciones() {
     }
 
-    public liquidaciones(int id_liquidacion, String nombre, String conductor, String placa, String fecha, String fecha_inicio, String fecha_fin, int sub_total, int gran_total, int id_desciento, int id_cliente, int id_viaje, int id_vehiculo, String estado) {
+    public liquidaciones(int id_liquidacion, String numero, String nombre, String conductor, String placa, String fecha, String fecha_inicio, String fecha_fin, int sub_total, int gran_total, int id_desciento, int id_cliente, int id_viaje, int id_vehiculo, String estado) {
         this.id_liquidacion = id_liquidacion;
+        this.numero = numero;
         this.nombre = nombre;
         this.conductor = conductor;
         this.placa = placa;
@@ -52,6 +54,14 @@ public class liquidaciones {
 
     public void setId_liquidacion(int id_liquidacion) {
         this.id_liquidacion = id_liquidacion;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public String getNombre() {
@@ -159,6 +169,5 @@ public class liquidaciones {
     }
 
     
-    
-    
+   
 }

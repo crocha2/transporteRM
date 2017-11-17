@@ -5,12 +5,25 @@
  */
 package interfaces;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import metodos.LiquidacionesMysql;
+import metodos.descuentosMysql;
 import metodos.propietariosMysql;
+import metodos.viajesMysql;
+import principales.descuentos;
+import principales.liquidaciones;
 import principales.propietarios;
+import principales.viajes;
 
 /**
  *
@@ -18,8 +31,14 @@ import principales.propietarios;
  */
 public class Liquidacion extends javax.swing.JFrame {
 
-    ArrayList<propietarios> propietario;
-    propietariosMysql dbPropietario = new propietariosMysql();
+    ArrayList<liquidaciones> liquidacion;
+    LiquidacionesMysql dbLiq = new LiquidacionesMysql();
+
+    ArrayList<viajes> viaje;
+    viajesMysql dbViajes = new viajesMysql();
+
+    ArrayList<descuentos> descuento;
+    descuentosMysql dbDescuentos = new descuentosMysql();
 
     /**
      * Creates new form Nuevo_Propietario
@@ -41,7 +60,108 @@ public class Liquidacion extends javax.swing.JFrame {
         txtEmail.setText("");
         txtTelefono.setText("");
         txtIdentificacion.requestFocus();
-        */
+         */
+    }
+
+    public void listarViajesFechas() {
+
+        String formato = txtFechaInicio.getDateFormatString();
+        Date date = txtFechaInicio.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        String datoIni = String.valueOf(sdf.format(date));
+        //vi.setFecha(dato);
+
+        String formato2 = txtFechaFinal.getDateFormatString();
+        Date date2 = txtFechaFinal.getDate();
+        SimpleDateFormat sdf2 = new SimpleDateFormat(formato2);
+        String datoFin = String.valueOf(sdf2.format(date2));
+        //vi.setFecha(dato);
+
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM viajes WHERE fecha BETWEEN ? AND ? ORDER BY fecha ASC");
+            pst.setString(1, datoIni);
+            pst.setString(2, datoFin);
+            ResultSet rs = pst.executeQuery();
+            LimpiarViajesFechas();
+            if (rs.next()) {
+                viajes vi = new viajes();
+                vi.setId_viaje(rs.getInt("id_viaje"));
+                vi.setPlaca(rs.getString("placa"));
+                vi.setFecha(rs.getString("fecha"));
+                vi.setDia(rs.getString("dia"));
+                vi.setRecorrido(rs.getString("recorrido"));
+                vi.setUnidad(rs.getInt("unidad"));
+                vi.setValor_m3(rs.getInt("valor_m3"));
+                vi.setM3(rs.getInt("m3"));
+                vi.setKm(rs.getInt("km"));
+                vi.setTotal(rs.getInt("total"));
+                vi.setId_vehiculo(rs.getInt("id_vehiculo"));
+                viaje.add(vi);
+                DefaultTableModel tb = (DefaultTableModel) tbViajes.getModel();
+                tb.addRow(new Object[]{vi.getId_viaje(), vi.getPlaca(), vi.getFecha(), vi.getDia(), vi.getRecorrido(), vi.getUnidad(), vi.getValor_m3(), vi.getM3(), vi.getKm(), vi.getTotal(), vi.getId_vehiculo()});
+                //autoCompleteEntradas();
+            }
+            cn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR EN BUSQUEDA_1: " + e.getMessage());
+        }
+    }
+
+    public void LimpiarViajesFechas() {
+        DefaultTableModel tb = (DefaultTableModel) tbViajes.getModel();
+        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
+            tb.removeRow(i);
+        }
+    }
+
+    public void listarDescuentosFechas() {
+
+        String formato = txtFechaInicio.getDateFormatString();
+        Date date = txtFechaInicio.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        String datoIni = String.valueOf(sdf.format(date));
+        //vi.setFecha(dato);
+
+        String formato2 = txtFechaFinal.getDateFormatString();
+        Date date2 = txtFechaFinal.getDate();
+        SimpleDateFormat sdf2 = new SimpleDateFormat(formato2);
+        String datoFin = String.valueOf(sdf2.format(date2));
+        //vi.setFecha(dato);
+
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM descuentos WHERE fecha BETWEEN ? AND ? ORDER BY fecha ASC");
+            pst.setString(1, datoIni);
+            pst.setString(2, datoFin);
+            ResultSet rs = pst.executeQuery();
+            LimpiarDescuentosFechas();
+            if (rs.next()) {
+                descuentos des = new descuentos();
+                des.setId_descuento(rs.getInt("id_descuento"));
+                des.setFecha(rs.getString("fecha").trim());
+                des.setDescripcion(rs.getString("descripcion").trim());
+                des.setUnidad(rs.getInt("unidad"));
+                des.setPrecio(rs.getInt("precio"));
+                des.setTotal(rs.getInt("total"));
+                descuento.add(des);
+                DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
+                tb.addRow(new Object[]{des.getId_descuento(), des.getFecha(), des.getDescripcion(), des.getUnidad(), des.getPrecio(), des.getTotal()});
+                //autoCompleteEntradas();
+            }
+            cn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR EN BUSQUEDA_2: " + e.getMessage());
+        }
+    }
+
+    public void LimpiarDescuentosFechas() {
+        DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
+        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
+            tb.removeRow(i);
+        }
     }
 
     /**
@@ -56,40 +176,45 @@ public class Liquidacion extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblNit1 = new javax.swing.JLabel();
-        txtFechaIngreso = new com.toedter.calendar.JDateChooser();
+        txtFechaInicio = new com.toedter.calendar.JDateChooser();
         lblNit8 = new javax.swing.JLabel();
-        txtFechaIngreso3 = new com.toedter.calendar.JDateChooser();
+        txtFechaFinal = new com.toedter.calendar.JDateChooser();
+        jButton4 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        txtIdentificacion2 = new javax.swing.JTextField();
+        txtSubTotal = new javax.swing.JTextField();
         lblNit3 = new javax.swing.JLabel();
-        txtIdentificacion4 = new javax.swing.JTextField();
+        txtDescuentos = new javax.swing.JTextField();
         lblNit9 = new javax.swing.JLabel();
-        txtIdentificacion11 = new javax.swing.JTextField();
+        txtGranTotal = new javax.swing.JTextField();
         lblNit12 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        txtIdentificacion3 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         lblNit4 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        lblNit7 = new javax.swing.JLabel();
-        txtFechaIngreso2 = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbDescuentos = new javax.swing.JTable();
         lblNit6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbViajes = new javax.swing.JTable();
         lblNit10 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        txtIdentificacion7 = new javax.swing.JTextField();
+        txtConductor = new javax.swing.JTextField();
         lblNit5 = new javax.swing.JLabel();
-        txtIdentificacion8 = new javax.swing.JTextField();
-        txtIdentificacion9 = new javax.swing.JTextField();
-        txtIdentificacion10 = new javax.swing.JTextField();
+        txtPlaca = new javax.swing.JTextField();
+        txtIdVehiculo = new javax.swing.JTextField();
+        txtIdConductor = new javax.swing.JTextField();
         lblNit11 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnLiquidar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        lblNit13 = new javax.swing.JLabel();
+        txtFechaLiq = new com.toedter.calendar.JDateChooser();
+        lblNit7 = new javax.swing.JLabel();
+        txtNumero = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -97,30 +222,29 @@ public class Liquidacion extends javax.swing.JFrame {
         jPanel3.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 51, 102));
+        jLabel2.setForeground(new java.awt.Color(0, 0, 102));
         jLabel2.setText("LIQUIDACION");
         jLabel2.setFocusCycleRoot(true);
         jPanel3.add(jLabel2);
-        jLabel2.setBounds(280, 6, 287, 42);
+        jLabel2.setBounds(10, 10, 287, 42);
 
-        jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
-        jSeparator1.setForeground(new java.awt.Color(0, 153, 153));
+        jSeparator1.setForeground(new java.awt.Color(0, 51, 102));
         jPanel3.add(jSeparator1);
-        jSeparator1.setBounds(9, 56, 830, 10);
+        jSeparator1.setBounds(10, 60, 830, 10);
 
-        jButton1.setBackground(new java.awt.Color(0, 153, 153));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText(". . .");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setBackground(new java.awt.Color(0, 51, 102));
+        btnActualizar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.setText(". . .");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton1);
-        jButton1.setBounds(220, 730, 190, 40);
+        jPanel3.add(btnActualizar);
+        btnActualizar.setBounds(370, 730, 190, 40);
 
-        jPanel4.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel4.setBackground(new java.awt.Color(0, 51, 102));
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jPanel4.setLayout(null);
 
@@ -130,9 +254,9 @@ public class Liquidacion extends javax.swing.JFrame {
         jPanel4.add(lblNit1);
         lblNit1.setBounds(20, 10, 90, 14);
 
-        txtFechaIngreso.setDateFormatString("yyyy-MM-dd");
-        jPanel4.add(txtFechaIngreso);
-        txtFechaIngreso.setBounds(20, 30, 270, 30);
+        txtFechaInicio.setDateFormatString("yyyy-MM-dd");
+        jPanel4.add(txtFechaInicio);
+        txtFechaInicio.setBounds(20, 30, 170, 30);
 
         lblNit8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit8.setForeground(new java.awt.Color(255, 255, 255));
@@ -140,33 +264,45 @@ public class Liquidacion extends javax.swing.JFrame {
         jPanel4.add(lblNit8);
         lblNit8.setBounds(20, 70, 90, 14);
 
-        txtFechaIngreso3.setDateFormatString("yyyy-MM-dd");
-        jPanel4.add(txtFechaIngreso3);
-        txtFechaIngreso3.setBounds(20, 90, 270, 30);
+        txtFechaFinal.setDateFormatString("yyyy-MM-dd");
+        jPanel4.add(txtFechaFinal);
+        txtFechaFinal.setBounds(20, 90, 170, 30);
+
+        jButton4.setBackground(new java.awt.Color(255, 255, 102));
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(0, 51, 102));
+        jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton4);
+        jButton4.setBounds(210, 50, 80, 40);
 
         jPanel3.add(jPanel4);
         jPanel4.setBounds(520, 150, 310, 130);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
         jPanel5.setLayout(null);
-        jPanel5.add(txtIdentificacion2);
-        txtIdentificacion2.setBounds(10, 10, 140, 30);
+        jPanel5.add(txtSubTotal);
+        txtSubTotal.setBounds(10, 10, 140, 30);
 
         lblNit3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit3.setForeground(new java.awt.Color(0, 51, 102));
         lblNit3.setText("SUB-TOTAL");
         jPanel5.add(lblNit3);
         lblNit3.setBounds(160, 10, 80, 14);
-        jPanel5.add(txtIdentificacion4);
-        txtIdentificacion4.setBounds(10, 50, 140, 30);
+        jPanel5.add(txtDescuentos);
+        txtDescuentos.setBounds(10, 50, 140, 30);
 
         lblNit9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit9.setForeground(new java.awt.Color(0, 51, 102));
         lblNit9.setText("DESCUENTOS");
         jPanel5.add(lblNit9);
         lblNit9.setBounds(160, 50, 80, 14);
-        jPanel5.add(txtIdentificacion11);
-        txtIdentificacion11.setBounds(10, 90, 140, 30);
+        jPanel5.add(txtGranTotal);
+        txtGranTotal.setBounds(10, 90, 140, 30);
 
         lblNit12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit12.setForeground(new java.awt.Color(0, 51, 102));
@@ -175,12 +311,12 @@ public class Liquidacion extends javax.swing.JFrame {
         lblNit12.setBounds(160, 90, 80, 14);
 
         jPanel3.add(jPanel5);
-        jPanel5.setBounds(540, 540, 250, 130);
+        jPanel5.setBounds(580, 540, 250, 130);
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
+        jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
         jPanel6.setLayout(null);
-        jPanel6.add(txtIdentificacion3);
-        txtIdentificacion3.setBounds(20, 30, 440, 30);
+        jPanel6.add(txtNombre);
+        txtNombre.setBounds(20, 30, 440, 30);
 
         lblNit4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit4.setForeground(new java.awt.Color(0, 51, 102));
@@ -191,23 +327,8 @@ public class Liquidacion extends javax.swing.JFrame {
         jPanel3.add(jPanel6);
         jPanel6.setBounds(20, 70, 480, 70);
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
-        jPanel7.setLayout(null);
-
-        lblNit7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit7.setForeground(new java.awt.Color(0, 51, 102));
-        lblNit7.setText("FECHA DE LIQUIDACION");
-        jPanel7.add(lblNit7);
-        lblNit7.setBounds(20, 10, 150, 14);
-
-        txtFechaIngreso2.setDateFormatString("yyyy-MM-dd");
-        jPanel7.add(txtFechaIngreso2);
-        txtFechaIngreso2.setBounds(20, 30, 270, 30);
-
-        jPanel3.add(jPanel7);
-        jPanel7.setBounds(520, 70, 310, 70);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbDescuentos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102), 3));
+        tbDescuentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -223,62 +344,63 @@ public class Liquidacion extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane1.setViewportView(jTable1);
+        tbDescuentos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane1.setViewportView(tbDescuentos);
 
         jPanel3.add(jScrollPane1);
-        jScrollPane1.setBounds(20, 540, 470, 180);
+        jScrollPane1.setBounds(20, 540, 540, 180);
 
         lblNit6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblNit6.setForeground(new java.awt.Color(0, 51, 102));
+        lblNit6.setForeground(new java.awt.Color(0, 0, 102));
         lblNit6.setText("DESCUENTOS");
         jPanel3.add(lblNit6);
         lblNit6.setBounds(20, 520, 140, 20);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbViajes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102), 3));
+        tbViajes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID_VIAJE", "FECHA", "DIA", "RECORRIDO", "UNIDAD", "VALOR M3", "M3", "KM RECORRIDO", "TOTAL", "ID_VEHICULO"
+                "ID_VIAJE", "PLACA", "FECHA", "DIA", "RECORRIDO", "UNIDAD", "VALOR M3", "M3", "KM RECORRIDO", "TOTAL", "ID_VEHICULO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true, true, true, true
+                false, true, true, true, true, true, true, true, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane2.setViewportView(jTable2);
+        tbViajes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane2.setViewportView(tbViajes);
 
         jPanel3.add(jScrollPane2);
         jScrollPane2.setBounds(20, 300, 810, 220);
 
         lblNit10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblNit10.setForeground(new java.awt.Color(0, 51, 102));
+        lblNit10.setForeground(new java.awt.Color(0, 0, 102));
         lblNit10.setText("VIAJES");
         jPanel3.add(lblNit10);
         lblNit10.setBounds(20, 280, 120, 20);
 
-        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153)));
+        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
         jPanel8.setLayout(null);
-        jPanel8.add(txtIdentificacion7);
-        txtIdentificacion7.setBounds(20, 30, 310, 30);
+        jPanel8.add(txtConductor);
+        txtConductor.setBounds(20, 30, 300, 30);
 
         lblNit5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit5.setForeground(new java.awt.Color(0, 51, 102));
         lblNit5.setText("CONDUCTOR");
         jPanel8.add(lblNit5);
         lblNit5.setBounds(20, 10, 100, 14);
-        jPanel8.add(txtIdentificacion8);
-        txtIdentificacion8.setBounds(20, 90, 310, 30);
-        jPanel8.add(txtIdentificacion9);
-        txtIdentificacion9.setBounds(400, 90, 70, 30);
-        jPanel8.add(txtIdentificacion10);
-        txtIdentificacion10.setBounds(400, 30, 70, 30);
+        jPanel8.add(txtPlaca);
+        txtPlaca.setBounds(20, 90, 300, 30);
+        jPanel8.add(txtIdVehiculo);
+        txtIdVehiculo.setBounds(410, 90, 60, 30);
+        jPanel8.add(txtIdConductor);
+        txtIdConductor.setBounds(410, 30, 60, 30);
 
         lblNit11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit11.setForeground(new java.awt.Color(0, 51, 102));
@@ -286,32 +408,66 @@ public class Liquidacion extends javax.swing.JFrame {
         jPanel8.add(lblNit11);
         lblNit11.setBounds(20, 70, 100, 14);
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jButton1.setText("Buscar");
+        jPanel8.add(jButton1);
+        jButton1.setBounds(330, 90, 70, 30);
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jButton2.setText("Buscar");
+        jPanel8.add(jButton2);
+        jButton2.setBounds(330, 30, 70, 30);
+
         jPanel3.add(jPanel8);
         jPanel8.setBounds(20, 150, 480, 130);
 
-        jButton2.setBackground(new java.awt.Color(0, 51, 102));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("LIQUIDAR");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnLiquidar.setBackground(new java.awt.Color(0, 51, 102));
+        btnLiquidar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnLiquidar.setForeground(new java.awt.Color(255, 255, 255));
+        btnLiquidar.setText("LIQUIDAR");
+        btnLiquidar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnLiquidarActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton2);
-        jButton2.setBounds(540, 680, 250, 40);
+        jPanel3.add(btnLiquidar);
+        btnLiquidar.setBounds(580, 680, 250, 90);
 
-        jButton3.setBackground(new java.awt.Color(0, 153, 153));
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("EDITAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnEditar.setBackground(new java.awt.Color(0, 51, 102));
+        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnEditarActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton3);
-        jButton3.setBounds(20, 730, 190, 40);
+        jPanel3.add(btnEditar);
+        btnEditar.setBounds(170, 730, 190, 40);
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
+        jPanel9.setLayout(null);
+
+        lblNit13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit13.setForeground(new java.awt.Color(0, 51, 102));
+        lblNit13.setText("FECHA DE LIQUIDACION");
+        jPanel9.add(lblNit13);
+        lblNit13.setBounds(20, 10, 150, 14);
+
+        txtFechaLiq.setDateFormatString("yyyy-MM-dd");
+        jPanel9.add(txtFechaLiq);
+        txtFechaLiq.setBounds(20, 30, 270, 30);
+
+        jPanel3.add(jPanel9);
+        jPanel9.setBounds(520, 70, 310, 70);
+
+        lblNit7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNit7.setForeground(new java.awt.Color(0, 51, 102));
+        lblNit7.setText("No.");
+        jPanel3.add(lblNit7);
+        lblNit7.setBounds(660, 30, 30, 20);
+        jPanel3.add(txtNumero);
+        txtNumero.setBounds(690, 20, 140, 30);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -327,7 +483,7 @@ public class Liquidacion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 
         /*
         if (txtIdentificacion.getText().isEmpty() || txtNombrePropietario.getText().isEmpty()) {
@@ -361,18 +517,31 @@ public class Liquidacion extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }
-        */
+         */
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnLiquidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiquidarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLiquidarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        try {
+            LimpiarViajesFechas();
+            listarViajesFechas();
+            LimpiarDescuentosFechas();
+            listarDescuentosFechas();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "error:\n"+e.getMessage());
+        }
 
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -411,25 +580,27 @@ public class Liquidacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnLiquidar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblNit1;
     private javax.swing.JLabel lblNit10;
     private javax.swing.JLabel lblNit11;
     private javax.swing.JLabel lblNit12;
+    private javax.swing.JLabel lblNit13;
     private javax.swing.JLabel lblNit3;
     private javax.swing.JLabel lblNit4;
     private javax.swing.JLabel lblNit5;
@@ -437,16 +608,19 @@ public class Liquidacion extends javax.swing.JFrame {
     private javax.swing.JLabel lblNit7;
     private javax.swing.JLabel lblNit8;
     private javax.swing.JLabel lblNit9;
-    private com.toedter.calendar.JDateChooser txtFechaIngreso;
-    private com.toedter.calendar.JDateChooser txtFechaIngreso2;
-    private com.toedter.calendar.JDateChooser txtFechaIngreso3;
-    private javax.swing.JTextField txtIdentificacion10;
-    private javax.swing.JTextField txtIdentificacion11;
-    private javax.swing.JTextField txtIdentificacion2;
-    private javax.swing.JTextField txtIdentificacion3;
-    private javax.swing.JTextField txtIdentificacion4;
-    private javax.swing.JTextField txtIdentificacion7;
-    private javax.swing.JTextField txtIdentificacion8;
-    private javax.swing.JTextField txtIdentificacion9;
+    private javax.swing.JTable tbDescuentos;
+    private javax.swing.JTable tbViajes;
+    private javax.swing.JTextField txtConductor;
+    private javax.swing.JTextField txtDescuentos;
+    private com.toedter.calendar.JDateChooser txtFechaFinal;
+    private com.toedter.calendar.JDateChooser txtFechaInicio;
+    private com.toedter.calendar.JDateChooser txtFechaLiq;
+    private javax.swing.JTextField txtGranTotal;
+    private javax.swing.JTextField txtIdConductor;
+    private javax.swing.JTextField txtIdVehiculo;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNumero;
+    private javax.swing.JTextField txtPlaca;
+    private javax.swing.JTextField txtSubTotal;
     // End of variables declaration//GEN-END:variables
 }
