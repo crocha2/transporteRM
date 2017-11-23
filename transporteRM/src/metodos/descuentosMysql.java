@@ -36,11 +36,13 @@ public class descuentosMysql {
             while (rs.next()) {
                 descuentos des = new  descuentos();
                 des.setId_descuento(rs.getInt("id_descuento"));
+                des.setPlaca(rs.getString("placa").trim());
                 des.setFecha(rs.getString("fecha").trim());
                 des.setDescripcion(rs.getString("descripcion").trim());
                 des.setUnidad(rs.getInt("unidad"));
                 des.setPrecio(rs.getInt("precio"));
                 des.setTotal(rs.getInt("total"));
+                des.setId_vehiculo(rs.getInt("id_vehiculo"));
                 descuento.add(des);
             }
             cn.close();
@@ -86,12 +88,14 @@ public class descuentosMysql {
     public void insertarDescuento(descuentos des) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
-            PreparedStatement pst = cn.prepareStatement("INSERT INTO descuentos(fecha, descripcion, unidad, precio, total) VALUES (?,?,?,?,?)");
-            pst.setString(1, des.getFecha());
-            pst.setString(2, des.getDescripcion());
-            pst.setInt(3, des.getUnidad());
-            pst.setInt(4, des.getPrecio());
-            pst.setInt(5, des.getTotal());
+            PreparedStatement pst = cn.prepareStatement("INSERT INTO descuentos(placa, fecha, descripcion, unidad, precio, total, id_vehiculo) VALUES (?,?,?,?,?,?,?,)");
+            pst.setString(1, des.getPlaca());
+            pst.setString(2, des.getFecha());
+            pst.setString(3, des.getDescripcion());
+            pst.setInt(4, des.getUnidad());
+            pst.setInt(5, des.getPrecio());
+            pst.setInt(6, des.getTotal());
+            pst.setInt(7, des.getId_vehiculo());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Guardado exitosamente");
             cn.close();
@@ -119,13 +123,15 @@ public class descuentosMysql {
     public void EditarDescuento(descuentos des) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
-            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("UPDATE descuentos SET fecha=?,descripcion=?,unidad=?,precio=?,total=? WHERE id_descuento = ?");
-            pst.setString(1, des.getFecha());
-            pst.setString(2, des.getDescripcion());
-            pst.setInt(3, des.getUnidad());
-            pst.setInt(4, des.getPrecio());
-            pst.setInt(5, des.getTotal());
-            pst.setInt(6, des.getId_descuento());
+            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("UPDATE descuentos SET placa=?,fecha=?,descripcion=?,unidad=?,precio=?,total=?,id_vehiculo=? WHERE id_descuento = ?");
+            pst.setString(1, des.getPlaca());
+            pst.setString(2, des.getFecha());
+            pst.setString(3, des.getDescripcion());
+            pst.setInt(4, des.getUnidad());
+            pst.setInt(5, des.getPrecio());
+            pst.setInt(6, des.getTotal());
+            pst.setInt(7, des.getId_vehiculo());
+            pst.setInt(8, des.getId_descuento());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Editado exitosamente");
             cn.close();

@@ -17,17 +17,21 @@ public class descuentos {
     int unidad;
     int precio;
     int total;
+    String placa;
+    int id_vehiculo;
 
     public descuentos() {
     }
 
-    public descuentos(int id_descuento, String fecha, String descripcion, int unidad, int precio, int total) {
+    public descuentos(int id_descuento, String fecha, String descripcion, int unidad, int precio, int total, String placa, int id_vehiculo) {
         this.id_descuento = id_descuento;
         this.fecha = fecha;
         this.descripcion = descripcion;
         this.unidad = unidad;
         this.precio = precio;
         this.total = total;
+        this.placa = placa;
+        this.id_vehiculo = id_vehiculo;
     }
 
     public int getId_descuento() {
@@ -77,6 +81,24 @@ public class descuentos {
     public void setTotal(int total) {
         this.total = total;
     }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public int getId_vehiculo() {
+        return id_vehiculo;
+    }
+
+    public void setId_vehiculo(int id_vehiculo) {
+        this.id_vehiculo = id_vehiculo;
+    }
+
+    
     
     
     

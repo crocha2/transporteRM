@@ -5,6 +5,13 @@
  */
 package interfaces;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import metodos.descuentosMysql;
 import principales.descuentos;
+import principales.viajes;
 
 /**
  *
@@ -31,11 +39,13 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         //this.setResizable(false);
         this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - DESCUENTOS");
         listarDescuentos();
+        autoCompletePlaca();
         
         txtPrecio.setText("1");
         txtUnidad.setText("1");
         
         txtIdDescuento.setEnabled(false);
+        txtIdVehiculo.setEnabled(false);
     }
 
     public void limpiar(){
@@ -55,7 +65,7 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         descuento = dbDescuentos.ListDescuentos();
         DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
         descuento.forEach((des) -> {
-            tb.addRow(new Object[]{des.getId_descuento(),des.getFecha(),des.getDescripcion(),des.getUnidad(),des.getPrecio(),des.getTotal()});
+            tb.addRow(new Object[]{des.getId_descuento(),des.getPlaca(),des.getFecha(),des.getDescripcion(),des.getUnidad(),des.getPrecio(),des.getTotal(),des.getId_vehiculo()});
         });
     }
 
@@ -63,6 +73,21 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
         for (int i = tb.getRowCount() - 1; i >= 0; i--) {
             tb.removeRow(i);
+        }
+    }
+    
+    public void autoCompletePlaca() {
+        TextAutoCompleter TextAutoCompleter = new TextAutoCompleter(auto);
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = (Statement) cn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT placa FROM vehiculos");
+            while (rs.next()) {
+                TextAutoCompleter.addItem(rs.getString("placa"));
+            }
+            cn.close();
+        } catch (Exception e) {
+            System.out.println("error: " + e);
         }
     }
 
@@ -100,6 +125,11 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         txtFecha2 = new javax.swing.JTextField();
         cmbUnidad = new javax.swing.JComboBox<>();
+        auto = new javax.swing.JTextField();
+        lblNit2 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        txtIdVehiculo = new javax.swing.JTextField();
+        jSeparator4 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbDescuentos = new javax.swing.JTable();
         txtIdDescuento = new javax.swing.JTextField();
@@ -117,20 +147,21 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel2.setLayout(null);
 
-        lblNit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblNit.setText("FECHA");
+        lblNit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNit.setForeground(new java.awt.Color(0, 0, 204));
+        lblNit.setText("PLACA");
         jPanel2.add(lblNit);
-        lblNit.setBounds(20, 10, 110, 14);
+        lblNit.setBounds(20, 20, 60, 30);
 
         lblNit1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit1.setText("DESCRIPCION");
         jPanel2.add(lblNit1);
-        lblNit1.setBounds(20, 80, 100, 14);
+        lblNit1.setBounds(20, 140, 100, 14);
 
         lblUnidad.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblUnidad.setText("UNIDAD");
         jPanel2.add(lblUnidad);
-        lblUnidad.setBounds(200, 10, 80, 14);
+        lblUnidad.setBounds(200, 70, 80, 14);
 
         txtUnidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -141,12 +172,12 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
             }
         });
         jPanel2.add(txtUnidad);
-        txtUnidad.setBounds(200, 30, 140, 30);
+        txtUnidad.setBounds(200, 90, 140, 30);
 
         lblNit3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit3.setText("PRECIO");
         jPanel2.add(lblNit3);
-        lblNit3.setBounds(370, 10, 70, 14);
+        lblNit3.setBounds(370, 70, 70, 14);
 
         txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -157,23 +188,23 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
             }
         });
         jPanel2.add(txtPrecio);
-        txtPrecio.setBounds(370, 30, 130, 30);
+        txtPrecio.setBounds(370, 90, 130, 30);
 
         txtFecha.setDateFormatString("yyyy-MM-dd");
         jPanel2.add(txtFecha);
-        txtFecha.setBounds(20, 30, 150, 30);
+        txtFecha.setBounds(20, 90, 150, 30);
 
         lblNit7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit7.setText("TOTAL");
         jPanel2.add(lblNit7);
-        lblNit7.setBounds(350, 100, 60, 14);
+        lblNit7.setBounds(350, 160, 60, 14);
 
         areaDescripcion.setColumns(20);
         areaDescripcion.setRows(5);
         jScrollPane1.setViewportView(areaDescripcion);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(20, 100, 320, 70);
+        jScrollPane1.setBounds(20, 160, 320, 70);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(null);
@@ -200,9 +231,9 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         txtTotal.setBounds(10, 10, 130, 30);
 
         jPanel2.add(jPanel1);
-        jPanel1.setBounds(350, 120, 150, 50);
+        jPanel1.setBounds(350, 180, 150, 50);
         jPanel2.add(jSeparator2);
-        jSeparator2.setBounds(20, 70, 480, 2);
+        jSeparator2.setBounds(20, 130, 480, 10);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel4.setLayout(null);
@@ -248,11 +279,11 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         jButton4.setBounds(250, 10, 110, 32);
 
         jPanel2.add(jPanel4);
-        jPanel4.setBounds(20, 190, 480, 50);
+        jPanel4.setBounds(20, 250, 480, 50);
         jPanel2.add(jSeparator3);
-        jSeparator3.setBounds(20, 180, 480, 10);
+        jSeparator3.setBounds(20, 240, 480, 10);
         jPanel2.add(txtFecha2);
-        txtFecha2.setBounds(20, 30, 150, 30);
+        txtFecha2.setBounds(20, 90, 150, 30);
 
         cmbUnidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UNIDAD", "VALOR" }));
         cmbUnidad.addActionListener(new java.awt.event.ActionListener() {
@@ -261,14 +292,34 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
             }
         });
         jPanel2.add(cmbUnidad);
-        cmbUnidad.setBounds(400, 80, 100, 20);
+        cmbUnidad.setBounds(400, 140, 100, 20);
+        jPanel2.add(auto);
+        auto.setBounds(80, 20, 110, 30);
+
+        lblNit2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblNit2.setText("FECHA");
+        jPanel2.add(lblNit2);
+        lblNit2.setBounds(20, 70, 110, 14);
+
+        jButton5.setText(">>");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton5);
+        jButton5.setBounds(200, 20, 50, 30);
+        jPanel2.add(txtIdVehiculo);
+        txtIdVehiculo.setBounds(260, 20, 60, 30);
+        jPanel2.add(jSeparator4);
+        jSeparator4.setBounds(20, 60, 480, 10);
 
         tbDescuentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "FECHA", "DESCRIPCION", "UNIDAD", "PRECIO", "TOTAL"
+                "ID", "PLACA", "FECHA", "DESCRIPCION", "UNIDAD", "PRECIO", "TOTAL", "ID_VEHICULO"
             }
         ));
         tbDescuentos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
@@ -278,14 +329,6 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(tbDescuentos);
-        if (tbDescuentos.getColumnModel().getColumnCount() > 0) {
-            tbDescuentos.getColumnModel().getColumn(0).setHeaderValue("ID");
-            tbDescuentos.getColumnModel().getColumn(1).setHeaderValue("FECHA");
-            tbDescuentos.getColumnModel().getColumn(2).setHeaderValue("DESCRIPCION");
-            tbDescuentos.getColumnModel().getColumn(3).setHeaderValue("UNIDAD");
-            tbDescuentos.getColumnModel().getColumn(4).setHeaderValue("PRECIO");
-            tbDescuentos.getColumnModel().getColumn(5).setHeaderValue("TOTAL");
-        }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -301,13 +344,13 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(66, 66, 66)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIdDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(txtIdDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -317,12 +360,12 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtIdDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIdDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -387,6 +430,8 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
                 
                 des.setFecha(txtFecha2.getText());
                 
+                des.setPlaca(auto.getText().toUpperCase());
+                des.setId_vehiculo(Integer.parseInt(txtIdVehiculo.getText()));
                 des.setDescripcion(areaDescripcion.getText().toUpperCase());
                 des.setUnidad(Integer.parseInt(txtUnidad.getText()));
                 des.setPrecio(Integer.parseInt(txtPrecio.getText()));
@@ -425,10 +470,14 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
                 String dato = String.valueOf(sdf.format(date));
                 des.setFecha(dato);
                 
+                des.setPlaca(auto.getText().toUpperCase());
+                des.setId_vehiculo(Integer.parseInt(txtIdVehiculo.getText()));
+                
                 des.setDescripcion(areaDescripcion.getText().toUpperCase());
                 des.setUnidad(1);
                 des.setPrecio(Integer.parseInt(txtPrecio.getText()));
                 des.setTotal(Integer.parseInt(txtTotal.getText()));
+                
 
                 dbDescuentos.insertarDescuento(des);
 
@@ -448,6 +497,9 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
                 SimpleDateFormat sdf = new SimpleDateFormat(formato);
                 String dato = String.valueOf(sdf.format(date));
                 des.setFecha(dato);
+                
+                des.setPlaca(auto.getText().toUpperCase());
+                des.setId_vehiculo(Integer.parseInt(txtIdVehiculo.getText()));
                 
                 des.setDescripcion(areaDescripcion.getText().toUpperCase());
                 des.setUnidad(Integer.parseInt(txtUnidad.getText()));
@@ -557,11 +609,13 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         int seleccion = tbDescuentos.getSelectedRow();
 
         txtIdDescuento.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 0)));
-        txtFecha2.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 1)));
-        areaDescripcion.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 2)));
-        txtUnidad.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 3)));
-        txtPrecio.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 4)));
-        txtTotal.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 5)));
+        auto.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 1)));
+        txtFecha2.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 2)));
+        areaDescripcion.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 3)));
+        txtUnidad.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 4)));
+        txtPrecio.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 5)));
+        txtTotal.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 6)));
+        txtIdVehiculo.setText(String.valueOf(tbDescuentos.getValueAt(seleccion, 7)));
         
         // TODO add your handling code here:
     }//GEN-LAST:event_tbDescuentosMouseClicked
@@ -581,6 +635,35 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
+        try {
+            String guardar = auto.getText();
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("Select id_vehiculo from vehiculos where placa = ?");
+            pst.setString(1, guardar);
+            //pst.setString(1, CMBID.getName());
+            ResultSet rs = pst.executeQuery();
+            //txtConductor.setText("");
+            if (rs.next()) {
+
+                viajes vi = new viajes();
+                vi.setId_vehiculo(rs.getInt("id_vehiculo"));
+                //txtIdConductor.setText(""+con);
+                txtIdVehiculo.setText(rs.getString("id_vehiculo").trim());
+                //autoCompleteConductor();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe el vehiculo");
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "error\n" + ex.getMessage());
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -620,11 +703,13 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaDescripcion;
+    private javax.swing.JTextField auto;
     private javax.swing.JComboBox<String> cmbUnidad;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -635,8 +720,10 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel lblNit;
     private javax.swing.JLabel lblNit1;
+    private javax.swing.JLabel lblNit2;
     private javax.swing.JLabel lblNit3;
     private javax.swing.JLabel lblNit7;
     private javax.swing.JLabel lblUnidad;
@@ -644,6 +731,7 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser txtFecha;
     private javax.swing.JTextField txtFecha2;
     private javax.swing.JTextField txtIdDescuento;
+    private javax.swing.JTextField txtIdVehiculo;
     private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtTotal;
     private javax.swing.JTextField txtUnidad;

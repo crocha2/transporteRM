@@ -65,27 +65,34 @@ public class Liquidacion extends javax.swing.JFrame {
 
     public void listarViajesFechas() {
 
+        String placa = txtPlaca.getText().trim();
+        System.out.println(placa);
+        
         String formato = txtFechaInicio.getDateFormatString();
         Date date = txtFechaInicio.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat(formato);
         String datoIni = String.valueOf(sdf.format(date));
         //vi.setFecha(dato);
+        System.out.println(datoIni);
 
         String formato2 = txtFechaFinal.getDateFormatString();
         Date date2 = txtFechaFinal.getDate();
         SimpleDateFormat sdf2 = new SimpleDateFormat(formato2);
         String datoFin = String.valueOf(sdf2.format(date2));
         //vi.setFecha(dato);
+        System.out.println(datoFin);
 
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            PreparedStatement pst = cn.prepareStatement("SELECT * FROM viajes WHERE fecha BETWEEN ? AND ? ORDER BY fecha ASC");
-            pst.setString(1, datoIni);
-            pst.setString(2, datoFin);
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM viajes WHERE placa = ? AND fecha BETWEEN ? AND ? ORDER BY fecha ASC");
+            pst.setString(1, placa);
+            pst.setString(2, datoIni);
+            pst.setString(3, datoFin);
             ResultSet rs = pst.executeQuery();
             LimpiarViajesFechas();
-            if (rs.next()) {
+            System.out.println("va bien 1");
+            while (rs.next()) {
                 viajes vi = new viajes();
                 vi.setId_viaje(rs.getInt("id_viaje"));
                 vi.setPlaca(rs.getString("placa"));
@@ -138,7 +145,7 @@ public class Liquidacion extends javax.swing.JFrame {
             pst.setString(2, datoFin);
             ResultSet rs = pst.executeQuery();
             LimpiarDescuentosFechas();
-            if (rs.next()) {
+            while (rs.next()) {
                 descuentos des = new descuentos();
                 des.setId_descuento(rs.getInt("id_descuento"));
                 des.setFecha(rs.getString("fecha").trim());
@@ -212,7 +219,7 @@ public class Liquidacion extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         lblNit13 = new javax.swing.JLabel();
-        txtFechaLiq = new com.toedter.calendar.JDateChooser();
+        txtFecha = new com.toedter.calendar.JDateChooser();
         lblNit7 = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
 
@@ -333,11 +340,11 @@ public class Liquidacion extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID_DESC", "FECHA", "DESCRIPCION", "UNIDAD", "PRECIO", "TOTAL"
+                "ID_DESC", "PLACA", "FECHA", "DESCRIPCION", "UNIDAD", "PRECIO", "TOTAL", "ID_VEHICULO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                false, false, true, true, true, true, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -348,7 +355,7 @@ public class Liquidacion extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tbDescuentos);
 
         jPanel3.add(jScrollPane1);
-        jScrollPane1.setBounds(20, 540, 540, 180);
+        jScrollPane1.setBounds(20, 540, 550, 180);
 
         lblNit6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblNit6.setForeground(new java.awt.Color(0, 0, 102));
@@ -409,12 +416,12 @@ public class Liquidacion extends javax.swing.JFrame {
         lblNit11.setBounds(20, 70, 100, 14);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jButton1.setText("Buscar");
+        jButton1.setText(">>");
         jPanel8.add(jButton1);
         jButton1.setBounds(330, 90, 70, 30);
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jButton2.setText("Buscar");
+        jButton2.setText(">>");
         jPanel8.add(jButton2);
         jButton2.setBounds(330, 30, 70, 30);
 
@@ -454,9 +461,9 @@ public class Liquidacion extends javax.swing.JFrame {
         jPanel9.add(lblNit13);
         lblNit13.setBounds(20, 10, 150, 14);
 
-        txtFechaLiq.setDateFormatString("yyyy-MM-dd");
-        jPanel9.add(txtFechaLiq);
-        txtFechaLiq.setBounds(20, 30, 270, 30);
+        txtFecha.setDateFormatString("yyyy-MM-dd");
+        jPanel9.add(txtFecha);
+        txtFecha.setBounds(20, 30, 270, 30);
 
         jPanel3.add(jPanel9);
         jPanel9.setBounds(520, 70, 310, 70);
@@ -531,14 +538,20 @@ public class Liquidacion extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
+        LimpiarViajesFechas();
+        listarViajesFechas();
+            
+        /*
         try {
             LimpiarViajesFechas();
             listarViajesFechas();
-            LimpiarDescuentosFechas();
-            listarDescuentosFechas();
+            //LimpiarDescuentosFechas();
+            //listarDescuentosFechas();
+            
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "error:\n"+e.getMessage());
+            JOptionPane.showMessageDialog(this, "error:\n" + e.getMessage());
         }
+        */
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -612,9 +625,9 @@ public class Liquidacion extends javax.swing.JFrame {
     private javax.swing.JTable tbViajes;
     private javax.swing.JTextField txtConductor;
     private javax.swing.JTextField txtDescuentos;
+    private com.toedter.calendar.JDateChooser txtFecha;
     private com.toedter.calendar.JDateChooser txtFechaFinal;
     private com.toedter.calendar.JDateChooser txtFechaInicio;
-    private com.toedter.calendar.JDateChooser txtFechaLiq;
     private javax.swing.JTextField txtGranTotal;
     private javax.swing.JTextField txtIdConductor;
     private javax.swing.JTextField txtIdVehiculo;
