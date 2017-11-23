@@ -32,6 +32,7 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
         this.setResizable(false);
         this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - NUEVO CONDUCTOR");
     }
+    
 
     public void limpiar() {
         txtCedula.setText("");
@@ -100,6 +101,12 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
+
+        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtCedula);
         txtCedula.setBounds(20, 40, 230, 30);
 
@@ -113,6 +120,17 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
         lblNit1.setText("NOMBRE COMPLETO");
         jPanel2.add(lblNit1);
         lblNit1.setBounds(270, 20, 130, 14);
+
+        txtNombreConductor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreConductorActionPerformed(evt);
+            }
+        });
+        txtNombreConductor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreConductorKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtNombreConductor);
         txtNombreConductor.setBounds(270, 40, 230, 30);
 
@@ -120,6 +138,12 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
         lblNit2.setText("DEPARTAMENTO");
         jPanel2.add(lblNit2);
         lblNit2.setBounds(20, 80, 110, 14);
+
+        txtDepartamento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDepartamentoKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtDepartamento);
         txtDepartamento.setBounds(20, 100, 230, 30);
 
@@ -127,6 +151,12 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
         lblNit3.setText("MUNICIPIO");
         jPanel2.add(lblNit3);
         lblNit3.setBounds(270, 80, 110, 14);
+
+        txtMunicipio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMunicipioKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtMunicipio);
         txtMunicipio.setBounds(270, 100, 230, 30);
 
@@ -262,6 +292,42 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCedulaKeyTyped
+
+    private void txtNombreConductorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreConductorKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreConductorKeyTyped
+
+    private void txtNombreConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreConductorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreConductorActionPerformed
+
+    private void txtDepartamentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDepartamentoKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDepartamentoKeyTyped
+
+    private void txtMunicipioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMunicipioKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMunicipioKeyTyped
 
     /**
      * @param args the command line arguments

@@ -239,6 +239,12 @@ public final class Recorridos extends javax.swing.JFrame {
         jLabel4.setText("DESTINO");
         jPanel2.add(jLabel4);
         jLabel4.setBounds(20, 70, 48, 14);
+
+        txtKm.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtKmKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtKm);
         txtKm.setBounds(100, 100, 100, 30);
         jPanel2.add(txtRecorrido);
@@ -472,6 +478,14 @@ public final class Recorridos extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtKmKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKmKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKmKeyTyped
 
     /**
      * @param args the command line arguments

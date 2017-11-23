@@ -136,6 +136,12 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
+
+        txtIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdentificacionKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtIdentificacion);
         txtIdentificacion.setBounds(20, 40, 230, 30);
 
@@ -148,6 +154,12 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         lblNit1.setText("NOMBRE PROPIETARIO");
         jPanel2.add(lblNit1);
         lblNit1.setBounds(270, 20, 130, 14);
+
+        txtNombrePropietario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombrePropietarioKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtNombrePropietario);
         txtNombrePropietario.setBounds(270, 40, 230, 30);
 
@@ -155,6 +167,12 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         lblNit2.setText("DEPARTAMENTO");
         jPanel2.add(lblNit2);
         lblNit2.setBounds(510, 20, 110, 14);
+
+        txtDepartamento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDepartamentoKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtDepartamento);
         txtDepartamento.setBounds(510, 40, 230, 30);
 
@@ -162,6 +180,12 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         lblNit3.setText("MUNICIPIO");
         jPanel2.add(lblNit3);
         lblNit3.setBounds(20, 80, 110, 14);
+
+        txtMunicipio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMunicipioKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtMunicipio);
         txtMunicipio.setBounds(20, 100, 230, 30);
 
@@ -457,6 +481,38 @@ public class Tabla_Propietarios extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdentificacionKeyTyped
+
+    private void txtNombrePropietarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombrePropietarioKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombrePropietarioKeyTyped
+
+    private void txtDepartamentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDepartamentoKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDepartamentoKeyTyped
+
+    private void txtMunicipioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMunicipioKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMunicipioKeyTyped
 
     /**
      * @param args the command line arguments

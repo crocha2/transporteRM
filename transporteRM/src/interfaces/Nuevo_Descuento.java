@@ -136,6 +136,9 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtUnidadKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnidadKeyTyped(evt);
+            }
         });
         jPanel2.add(txtUnidad);
         txtUnidad.setBounds(200, 30, 140, 30);
@@ -148,6 +151,9 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtPrecioKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
             }
         });
         jPanel2.add(txtPrecio);
@@ -196,7 +202,7 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         jPanel2.add(jPanel1);
         jPanel1.setBounds(350, 120, 150, 50);
         jPanel2.add(jSeparator2);
-        jSeparator2.setBounds(20, 70, 480, 10);
+        jSeparator2.setBounds(20, 70, 480, 2);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel4.setLayout(null);
@@ -559,6 +565,22 @@ public final class Nuevo_Descuento extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_tbDescuentosMouseClicked
+
+    private void txtUnidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnidadKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUnidadKeyTyped
+
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioKeyTyped
 
     /**
      * @param args the command line arguments

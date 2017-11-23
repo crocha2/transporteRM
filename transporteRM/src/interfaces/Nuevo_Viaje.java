@@ -203,6 +203,9 @@ public final class Nuevo_Viaje extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtUnidadKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUnidadKeyTyped(evt);
+            }
         });
         jPanel2.add(txtUnidad);
         txtUnidad.setBounds(20, 160, 130, 30);
@@ -219,6 +222,9 @@ public final class Nuevo_Viaje extends javax.swing.JFrame {
         txtM3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtM3KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtM3KeyTyped(evt);
             }
         });
         jPanel2.add(txtM3);
@@ -553,6 +559,9 @@ public final class Nuevo_Viaje extends javax.swing.JFrame {
 
     private void txtKmKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKmKeyTyped
 
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_txtKmKeyTyped
 
@@ -579,6 +588,22 @@ public final class Nuevo_Viaje extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbValorM3ActionPerformed
+
+    private void txtUnidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnidadKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUnidadKeyTyped
+
+    private void txtM3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtM3KeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtM3KeyTyped
 
     /**
      * @param args the command line arguments

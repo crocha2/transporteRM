@@ -197,6 +197,12 @@ public final class Nuevo_Vehiculo extends javax.swing.JFrame {
         lblNit4.setBounds(310, 20, 110, 14);
         jPanel4.add(txtModelo);
         txtModelo.setBounds(20, 100, 250, 30);
+
+        txtColor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtColorKeyTyped(evt);
+            }
+        });
         jPanel4.add(txtColor);
         txtColor.setBounds(310, 100, 150, 30);
 
@@ -232,6 +238,12 @@ public final class Nuevo_Vehiculo extends javax.swing.JFrame {
         cmbPropio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SI", "NO" }));
         jPanel5.add(cmbPropio);
         cmbPropio.setBounds(310, 40, 80, 30);
+
+        txtMetroCubico.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMetroCubicoKeyTyped(evt);
+            }
+        });
         jPanel5.add(txtMetroCubico);
         txtMetroCubico.setBounds(20, 40, 250, 30);
         jPanel5.add(txtConductor);
@@ -447,6 +459,22 @@ public final class Nuevo_Vehiculo extends javax.swing.JFrame {
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtColorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtColorKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtColorKeyTyped
+
+    private void txtMetroCubicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMetroCubicoKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMetroCubicoKeyTyped
 
     /**
      * @param args the command line arguments

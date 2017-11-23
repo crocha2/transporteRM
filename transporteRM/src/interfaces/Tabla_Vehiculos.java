@@ -256,6 +256,12 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
         lblNit8.setBounds(290, 80, 110, 14);
         jPanel2.add(txtModelo);
         txtModelo.setBounds(290, 100, 260, 30);
+
+        txtColor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtColorKeyTyped(evt);
+            }
+        });
         jPanel2.add(txtColor);
         txtColor.setBounds(570, 100, 250, 30);
 
@@ -275,6 +281,12 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
         lblNit10.setText("METROS CUBICOS (m3)");
         jPanel5.add(lblNit10);
         lblNit10.setBounds(20, 20, 160, 14);
+
+        txtMetroCubico.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMetroCubicoKeyTyped(evt);
+            }
+        });
         jPanel5.add(txtMetroCubico);
         txtMetroCubico.setBounds(20, 40, 250, 30);
         jPanel5.add(txtConductor);
@@ -327,6 +339,12 @@ public final class Tabla_Vehiculos extends javax.swing.JFrame {
         lblNit13.setText("ID");
         jPanel5.add(lblNit13);
         lblNit13.setBounds(100, 144, 30, 20);
+
+        txtPropio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPropioKeyTyped(evt);
+            }
+        });
         jPanel5.add(txtPropio);
         txtPropio.setBounds(290, 40, 100, 30);
 
@@ -721,6 +739,30 @@ if (txtAñoModelo.getText().isEmpty() || txtIdConductor.getText().isEmpty() || t
         
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtColorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtColorKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtColorKeyTyped
+
+    private void txtMetroCubicoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMetroCubicoKeyTyped
+
+        char c = evt.getKeyChar();
+        if(c<'0'||c>'9') evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMetroCubicoKeyTyped
+
+    private void txtPropioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPropioKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPropioKeyTyped
 
     /**
      * @param args the command line arguments

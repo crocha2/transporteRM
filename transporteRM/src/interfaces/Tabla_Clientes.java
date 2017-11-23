@@ -154,6 +154,11 @@ public class Tabla_Clientes extends javax.swing.JFrame {
                 txtDepartamentoActionPerformed(evt);
             }
         });
+        txtDepartamento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDepartamentoKeyTyped(evt);
+            }
+        });
         jPanel4.add(txtDepartamento);
         txtDepartamento.setBounds(30, 100, 210, 30);
 
@@ -166,6 +171,12 @@ public class Tabla_Clientes extends javax.swing.JFrame {
         lblNit4.setText("Direccion");
         jPanel4.add(lblNit4);
         lblNit4.setBounds(500, 80, 100, 14);
+
+        txtMunicipio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMunicipioKeyTyped(evt);
+            }
+        });
         jPanel4.add(txtMunicipio);
         txtMunicipio.setBounds(260, 100, 210, 30);
         jPanel4.add(txtDireccion);
@@ -175,6 +186,12 @@ public class Tabla_Clientes extends javax.swing.JFrame {
         jLabel8.setText("Nombre Del Contacto");
         jPanel4.add(jLabel8);
         jLabel8.setBounds(30, 140, 150, 14);
+
+        txtContacto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContactoKeyTyped(evt);
+            }
+        });
         jPanel4.add(txtContacto);
         txtContacto.setBounds(30, 160, 210, 30);
 
@@ -484,6 +501,30 @@ public class Tabla_Clientes extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtDepartamentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDepartamentoKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDepartamentoKeyTyped
+
+    private void txtMunicipioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMunicipioKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMunicipioKeyTyped
+
+    private void txtContactoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContactoKeyTyped
+
+        char c = evt.getKeyChar();
+        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtContactoKeyTyped
 
     /**
      * @param args the command line arguments
