@@ -40,20 +40,20 @@ public class viajes {
         this.id_vehiculo = id_vehiculo;
     }
 
-    public String getPlaca() {
-        return placa;
-    }
-
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
     public int getId_viaje() {
         return id_viaje;
     }
 
     public void setId_viaje(int id_viaje) {
         this.id_viaje = id_viaje;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
     public String getFecha() {
@@ -71,7 +71,6 @@ public class viajes {
     public void setDia(String dia) {
         this.dia = dia;
     }
-    
 
     public String getRecorrido() {
         return recorrido;
@@ -112,7 +111,6 @@ public class viajes {
     public void setKm(int km) {
         this.km = km;
     }
-    
 
     public int getTotal() {
         return total;
@@ -129,7 +127,6 @@ public class viajes {
     public void setId_vehiculo(int id_vehiculo) {
         this.id_vehiculo = id_vehiculo;
     }
-    
-    
-    
+
+        
 }

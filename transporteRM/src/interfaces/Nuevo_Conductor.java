@@ -303,9 +303,7 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
 
     private void txtNombreConductorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreConductorKeyTyped
 
-        char c = evt.getKeyChar();
-        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
-
+   
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreConductorKeyTyped
 
@@ -315,16 +313,12 @@ public class Nuevo_Conductor extends javax.swing.JFrame {
 
     private void txtDepartamentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDepartamentoKeyTyped
 
-        char c = evt.getKeyChar();
-        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
-        
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDepartamentoKeyTyped
 
     private void txtMunicipioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMunicipioKeyTyped
 
-        char c = evt.getKeyChar();
-        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
+
         
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMunicipioKeyTyped

@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,8 +15,11 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import metodos.GenerarNumeros;
 import metodos.LiquidacionesMysql;
 import metodos.descuentosMysql;
 import metodos.propietariosMysql;
@@ -29,13 +33,13 @@ import principales.viajes;
  *
  * @author user
  */
-public class Liquidacion extends javax.swing.JFrame {
+public final class Liquidacion extends javax.swing.JFrame {
 
     ArrayList<liquidaciones> liquidacion;
     LiquidacionesMysql dbLiq = new LiquidacionesMysql();
 
     ArrayList<viajes> viaje;
-    viajesMysql dbViajes = new viajesMysql();
+    viajesMysql dbviaje = new viajesMysql();
 
     ArrayList<descuentos> descuento;
     descuentosMysql dbDescuentos = new descuentosMysql();
@@ -48,6 +52,43 @@ public class Liquidacion extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("TRANSPORTES RM DEL CARIBE S.A.S - LIQUIDACION");
+        numeros();
+        autoCompleteConductor();
+        autoCompletePlaca();
+        txtNumero.setEnabled(false);
+        txtIdConductor.setEnabled(false);
+        txtIdVehiculo.setEnabled(false);
+        txtConductor.setEnabled(false);
+    }
+
+    public void autoCompleteConductor() {
+        TextAutoCompleter TextAutoCompleter = new TextAutoCompleter(txtConductor);
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = (Statement) cn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT nombre FROM conductores");
+            while (rs.next()) {
+                TextAutoCompleter.addItem(rs.getString("nombre"));
+            }
+            cn.close();
+        } catch (SQLException e) {
+            System.out.println("error: " + e);
+        }
+    }
+
+    public void autoCompletePlaca() {
+        TextAutoCompleter TextAutoCompleter = new TextAutoCompleter(txtPlaca);
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = (Statement) cn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT placa FROM vehiculos");
+            while (rs.next()) {
+                TextAutoCompleter.addItem(rs.getString("placa"));
+            }
+            cn.close();
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+        }
     }
 
     public void limpiar() {
@@ -63,11 +104,51 @@ public class Liquidacion extends javax.swing.JFrame {
          */
     }
 
+    void numeros() {
+        int j;
+        String c = "";
+        String SQL = "SELECT MAX(numero) AS numero FROM liquidaciones";
+        try {
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            if (rs.next()) {
+                c = rs.getString("numero");
+            }
+            System.out.println(c);
+            if (c == null) {
+                txtNumero.setText("LQ-0000001");
+                System.out.println(c);
+            } else {
+                char r1 = c.charAt(3);
+                char r2 = c.charAt(4);
+                char r3 = c.charAt(5);
+                char r4 = c.charAt(6);
+                char r5 = c.charAt(7);
+                char r6 = c.charAt(8);
+                char r7 = c.charAt(9);
+
+                System.out.println("" + r1 + r2 + r3 + r4 + r5 + r6 + r7);
+                String juntar = "" + r1 + r2 + r3 + r4 + r5 + r6 + r7;
+                int var = Integer.parseInt(juntar);
+
+                System.out.println("\n lo que vale: " + var);
+                GenerarNumeros gen = new GenerarNumeros();
+                gen.generarLiquidacion(var);
+
+                txtNumero.setDisabledTextColor(java.awt.Color.BLUE);
+                txtNumero.setText(gen.serie());
+            }
+        } catch (SQLException | NumberFormatException ex) {
+            Logger.getLogger(liquidaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void listarViajesFechas() {
 
         String placa = txtPlaca.getText().trim();
         System.out.println(placa);
-        
+
         String formato = txtFechaInicio.getDateFormatString();
         Date date = txtFechaInicio.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat(formato);
@@ -90,10 +171,13 @@ public class Liquidacion extends javax.swing.JFrame {
             pst.setString(2, datoIni);
             pst.setString(3, datoFin);
             ResultSet rs = pst.executeQuery();
+
             LimpiarViajesFechas();
             System.out.println("va bien 1");
             while (rs.next()) {
+
                 viajes vi = new viajes();
+            
                 vi.setId_viaje(rs.getInt("id_viaje"));
                 vi.setPlaca(rs.getString("placa"));
                 vi.setFecha(rs.getString("fecha"));
@@ -105,10 +189,15 @@ public class Liquidacion extends javax.swing.JFrame {
                 vi.setKm(rs.getInt("km"));
                 vi.setTotal(rs.getInt("total"));
                 vi.setId_vehiculo(rs.getInt("id_vehiculo"));
+                
+                //JOptionPane.showMessageDialog(this, +vi.getId_viaje()+"\n"+vi.getPlaca()+"\n"+vi.getFecha()+"\n"+vi.getDia()+"\n"+vi.getRecorrido()+"\n"+vi.getUnidad()+"\n"+vi.getValor_m3()+"\n"+vi.getM3()+"\n"+vi.getKm()+"\n"+vi.getTotal()+"\n"+vi.getId_vehiculo());
+                viaje.add(vi);
+                JOptionPane.showMessageDialog(this, vi.getId_viaje()+"\n"+vi.getPlaca()+"\n"+vi.getFecha()+"\n"+vi.getDia()+"\n"+vi.getRecorrido()+"\n"+vi.getUnidad()+"\n"+vi.getValor_m3()+"\n"+vi.getM3()+"\n"+vi.getKm()+"\n"+vi.getTotal()+"\n"+vi.getId_vehiculo());
+/*
                 viaje.add(vi);
                 DefaultTableModel tb = (DefaultTableModel) tbViajes.getModel();
                 tb.addRow(new Object[]{vi.getId_viaje(), vi.getPlaca(), vi.getFecha(), vi.getDia(), vi.getRecorrido(), vi.getUnidad(), vi.getValor_m3(), vi.getM3(), vi.getKm(), vi.getTotal(), vi.getId_vehiculo()});
-                //autoCompleteEntradas();
+           */
             }
             cn.close();
         } catch (SQLException e) {
@@ -190,6 +279,8 @@ public class Liquidacion extends javax.swing.JFrame {
         lblNit8 = new javax.swing.JLabel();
         txtFechaFinal = new com.toedter.calendar.JDateChooser();
         jButton4 = new javax.swing.JButton();
+        txtFec1 = new javax.swing.JTextField();
+        txtFec2 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         txtSubTotal = new javax.swing.JTextField();
         lblNit3 = new javax.swing.JLabel();
@@ -214,7 +305,7 @@ public class Liquidacion extends javax.swing.JFrame {
         txtIdConductor = new javax.swing.JTextField();
         lblNit11 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         btnLiquidar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
@@ -263,7 +354,7 @@ public class Liquidacion extends javax.swing.JFrame {
 
         txtFechaInicio.setDateFormatString("yyyy-MM-dd");
         jPanel4.add(txtFechaInicio);
-        txtFechaInicio.setBounds(20, 30, 170, 30);
+        txtFechaInicio.setBounds(20, 30, 130, 30);
 
         lblNit8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit8.setForeground(new java.awt.Color(255, 255, 255));
@@ -273,7 +364,7 @@ public class Liquidacion extends javax.swing.JFrame {
 
         txtFechaFinal.setDateFormatString("yyyy-MM-dd");
         jPanel4.add(txtFechaFinal);
-        txtFechaFinal.setBounds(20, 90, 170, 30);
+        txtFechaFinal.setBounds(20, 90, 130, 30);
 
         jButton4.setBackground(new java.awt.Color(255, 255, 102));
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -285,7 +376,11 @@ public class Liquidacion extends javax.swing.JFrame {
             }
         });
         jPanel4.add(jButton4);
-        jButton4.setBounds(210, 50, 80, 40);
+        jButton4.setBounds(240, 10, 50, 40);
+        jPanel4.add(txtFec1);
+        txtFec1.setBounds(180, 60, 110, 30);
+        jPanel4.add(txtFec2);
+        txtFec2.setBounds(180, 90, 110, 30);
 
         jPanel3.add(jPanel4);
         jPanel4.setBounds(520, 150, 310, 130);
@@ -394,36 +489,47 @@ public class Liquidacion extends javax.swing.JFrame {
 
         jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
         jPanel8.setLayout(null);
+
+        txtConductor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtConductorKeyTyped(evt);
+            }
+        });
         jPanel8.add(txtConductor);
-        txtConductor.setBounds(20, 30, 300, 30);
+        txtConductor.setBounds(10, 90, 300, 30);
 
         lblNit5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit5.setForeground(new java.awt.Color(0, 51, 102));
         lblNit5.setText("CONDUCTOR");
         jPanel8.add(lblNit5);
-        lblNit5.setBounds(20, 10, 100, 14);
+        lblNit5.setBounds(10, 70, 100, 14);
         jPanel8.add(txtPlaca);
-        txtPlaca.setBounds(20, 90, 300, 30);
+        txtPlaca.setBounds(10, 30, 300, 30);
         jPanel8.add(txtIdVehiculo);
-        txtIdVehiculo.setBounds(410, 90, 60, 30);
+        txtIdVehiculo.setBounds(400, 30, 60, 30);
         jPanel8.add(txtIdConductor);
-        txtIdConductor.setBounds(410, 30, 60, 30);
+        txtIdConductor.setBounds(400, 90, 60, 30);
 
         lblNit11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit11.setForeground(new java.awt.Color(0, 51, 102));
         lblNit11.setText("PLACA");
         jPanel8.add(lblNit11);
-        lblNit11.setBounds(20, 70, 100, 14);
+        lblNit11.setBounds(10, 10, 100, 14);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jButton1.setText(">>");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel8.add(jButton1);
-        jButton1.setBounds(330, 90, 70, 30);
+        jButton1.setBounds(320, 30, 70, 30);
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jButton2.setText(">>");
-        jPanel8.add(jButton2);
-        jButton2.setBounds(330, 30, 70, 30);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel1.setText(">>");
+        jPanel8.add(jLabel1);
+        jLabel1.setBounds(350, 90, 30, 30);
 
         jPanel3.add(jPanel8);
         jPanel8.setBounds(20, 150, 480, 130);
@@ -540,7 +646,7 @@ public class Liquidacion extends javax.swing.JFrame {
 
         LimpiarViajesFechas();
         listarViajesFechas();
-            
+
         /*
         try {
             LimpiarViajesFechas();
@@ -551,10 +657,55 @@ public class Liquidacion extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "error:\n" + e.getMessage());
         }
-        */
-
+         */
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtConductorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConductorKeyTyped
+
+        char c = evt.getKeyChar();
+        if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
+            evt.consume();
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtConductorKeyTyped
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        try {
+            String guardar = txtPlaca.getText();
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
+            Statement st = cn.createStatement();
+            PreparedStatement pst = cn.prepareStatement("SELECT v.id_vehiculo, v.id_conductor, c.nombre\n"
+                    + " FROM   vehiculos v\n"
+                    + " INNER JOIN conductores c\n"
+                    + " ON v.id_vehiculo = c.id_conductor\n"
+                    + " WHERE v.placa = ?");
+            pst.setString(1, guardar);
+            ResultSet rs = pst.executeQuery();
+            txtIdVehiculo.setText("");
+            if (rs.next()) {
+
+                txtIdVehiculo.setText(rs.getString("id_vehiculo").trim());
+                txtIdVehiculo.setDisabledTextColor(java.awt.Color.RED);
+
+                txtIdConductor.setText(rs.getString("id_conductor").trim());
+                txtIdConductor.setDisabledTextColor(java.awt.Color.RED);
+
+                txtConductor.setText(rs.getString("nombre").trim());
+                txtConductor.setDisabledTextColor(java.awt.Color.RED);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe el vehiculo");
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "error\n" + ex.getMessage());
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -597,8 +748,8 @@ public class Liquidacion extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnLiquidar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -625,6 +776,8 @@ public class Liquidacion extends javax.swing.JFrame {
     private javax.swing.JTable tbViajes;
     private javax.swing.JTextField txtConductor;
     private javax.swing.JTextField txtDescuentos;
+    private javax.swing.JTextField txtFec1;
+    private javax.swing.JTextField txtFec2;
     private com.toedter.calendar.JDateChooser txtFecha;
     private com.toedter.calendar.JDateChooser txtFechaFinal;
     private com.toedter.calendar.JDateChooser txtFechaInicio;

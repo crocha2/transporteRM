@@ -462,8 +462,6 @@ public final class Nuevo_Vehiculo extends javax.swing.JFrame {
 
     private void txtColorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtColorKeyTyped
 
-        char c = evt.getKeyChar();
-        if((c<'a'||c>'z')&&(c<'A'||c>'Z')) evt.consume();
         
         // TODO add your handling code here:
     }//GEN-LAST:event_txtColorKeyTyped
