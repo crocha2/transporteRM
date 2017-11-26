@@ -22,26 +22,25 @@ import javax.swing.table.DefaultTableModel;
 import metodos.GenerarNumeros;
 import metodos.LiquidacionesMysql;
 import metodos.descuentosMysql;
-import metodos.propietariosMysql;
 import metodos.viajesMysql;
+
 import principales.descuentos;
 import principales.liquidaciones;
-import principales.propietarios;
 import principales.viajes;
 
 /**
  *
  * @author user
  */
-public final class Liquidacion extends javax.swing.JFrame {
+public class Liquidacion extends javax.swing.JFrame {
 
-    ArrayList<liquidaciones> liquidacion;
+    ArrayList<liquidaciones> liquida;
     LiquidacionesMysql dbLiq = new LiquidacionesMysql();
 
     ArrayList<viajes> viaje;
     viajesMysql dbviaje = new viajesMysql();
 
-    ArrayList<descuentos> descuento;
+    ArrayList<descuentos> descu;
     descuentosMysql dbDescuentos = new descuentosMysql();
 
     /**
@@ -144,9 +143,15 @@ public final class Liquidacion extends javax.swing.JFrame {
         }
     }
 
-    public void listarViajesFechas() {
+    public void LimpiarVia() {
+        DefaultTableModel tb = (DefaultTableModel) tbViajesFecha.getModel();
+        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
+            tb.removeRow(i);
+        }
+    }
 
-        String placa = txtPlaca.getText().trim();
+    public void listarVia() {
+        String placa = txtPlaca.getText();
         System.out.println(placa);
 
         String formato = txtFechaInicio.getDateFormatString();
@@ -154,33 +159,90 @@ public final class Liquidacion extends javax.swing.JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat(formato);
         String datoIni = String.valueOf(sdf.format(date));
         //vi.setFecha(dato);
+
+        String format = txtFechaFinal.getDateFormatString();
+        Date dat = txtFechaFinal.getDate();
+        SimpleDateFormat sd = new SimpleDateFormat(format);
+        String datoFin = String.valueOf(sd.format(dat));
+        //vi.setFecha(dato);
+
+        viaje = dbLiq.ListViajesFechas(placa, datoIni, datoFin);
+        DefaultTableModel tb = (DefaultTableModel) tbViajesFecha.getModel();
+        viaje.forEach((vi) -> {
+            tb.addRow(new Object[]{vi.getId_viaje(), vi.getFecha(), vi.getPlaca(), vi.getDia(), vi.getRecorrido(), vi.getUnidad(), vi.getValor_m3(), vi.getM3(), vi.getKm(), vi.getTotal(), vi.getId_vehiculo()});
+        });
+    }
+
+    public void LimpiarDescuentosFechas() {
+        DefaultTableModel tb = (DefaultTableModel) tbDescuentoss.getModel();
+        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
+            tb.removeRow(i);
+        }
+    }
+
+    public void listarDescuentosFechas() {
+        String placa = txtPlaca.getText();
+        System.out.println(placa);
+
+        String formato = txtFechaInicio.getDateFormatString();
+        Date date = txtFechaInicio.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        String datoIni = String.valueOf(sdf.format(date));
+        //vi.setFecha(dato);
+
+        String format = txtFechaFinal.getDateFormatString();
+        Date dat = txtFechaFinal.getDate();
+        SimpleDateFormat sd = new SimpleDateFormat(format);
+        String datoFin = String.valueOf(sd.format(dat));
+        //vi.setFecha(dato);
+
+        descu = dbLiq.ListDescuentosFechas(placa, datoIni, datoFin);
+        DefaultTableModel tb = (DefaultTableModel) tbDescuentoss.getModel();
+        descu.forEach((des) -> {
+            tb.addRow(new Object[]{des.getId_descuento(), des.getPlaca(), des.getFecha(), des.getDescripcion(), des.getUnidad(), des.getPrecio(), des.getTotal(), des.getId_vehiculo()});
+        });
+    }
+
+    /*
+    public void listarViajesFechas() {
+
+        String placa = txtPlaca.getText();
+        System.out.println(placa);
+
+     
+        String formato = txtFechaInicio.getDateFormatString();
+        Date date = txtFechaInicio.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        String datoIni = String.valueOf(sdf.format(date));
+        //vi.setFecha(dato);
         System.out.println(datoIni);
 
-        String formato2 = txtFechaFinal.getDateFormatString();
-        Date date2 = txtFechaFinal.getDate();
-        SimpleDateFormat sdf2 = new SimpleDateFormat(formato2);
-        String datoFin = String.valueOf(sdf2.format(date2));
+        String format = txtFechaFinal.getDateFormatString();
+        Date dat = txtFechaFinal.getDate();
+        SimpleDateFormat sd = new SimpleDateFormat(format);
+        String datoFin = String.valueOf(sd.format(dat));
         //vi.setFecha(dato);
         System.out.println(datoFin);
+      
 
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            PreparedStatement pst = cn.prepareStatement("SELECT * FROM viajes WHERE placa = ? AND fecha BETWEEN ? AND ? ORDER BY fecha ASC");
+            PreparedStatement pst = (PreparedStatement) cn.prepareStatement("SELECT * FROM viajes WHERE placa = ? AND fecha BETWEEN ? AND ? ORDER BY fecha ASC");
             pst.setString(1, placa);
             pst.setString(2, datoIni);
             pst.setString(3, datoFin);
             ResultSet rs = pst.executeQuery();
 
-            LimpiarViajesFechas();
+            //LimpiarViajesFechas();
             System.out.println("va bien 1");
             while (rs.next()) {
 
-                viajes vi = new viajes();
-            
+                viajes vi= new viajes();
+
                 vi.setId_viaje(rs.getInt("id_viaje"));
-                vi.setPlaca(rs.getString("placa"));
                 vi.setFecha(rs.getString("fecha"));
+                vi.setPlaca(rs.getString("placa"));
                 vi.setDia(rs.getString("dia"));
                 vi.setRecorrido(rs.getString("recorrido"));
                 vi.setUnidad(rs.getInt("unidad"));
@@ -190,61 +252,59 @@ public final class Liquidacion extends javax.swing.JFrame {
                 vi.setTotal(rs.getInt("total"));
                 vi.setId_vehiculo(rs.getInt("id_vehiculo"));
                 
-                //JOptionPane.showMessageDialog(this, +vi.getId_viaje()+"\n"+vi.getPlaca()+"\n"+vi.getFecha()+"\n"+vi.getDia()+"\n"+vi.getRecorrido()+"\n"+vi.getUnidad()+"\n"+vi.getValor_m3()+"\n"+vi.getM3()+"\n"+vi.getKm()+"\n"+vi.getTotal()+"\n"+vi.getId_vehiculo());
+                //JOptionPane.showMessageDialog(this, +vi.getId_viaje()+"\n"+vi.getFecha()+"\n"+vi.getPlaca()+"\n"+vi.getDia()+"\n"+vi.getRecorrido()+"\n"+vi.getUnidad()+"\n"+vi.getValor_m3()+"\n"+vi.getM3()+"\n"+vi.getKm()+"\n"+vi.getTotal()+"\n"+vi.getId_vehiculo());
+               
                 viaje.add(vi);
-                JOptionPane.showMessageDialog(this, vi.getId_viaje()+"\n"+vi.getPlaca()+"\n"+vi.getFecha()+"\n"+vi.getDia()+"\n"+vi.getRecorrido()+"\n"+vi.getUnidad()+"\n"+vi.getValor_m3()+"\n"+vi.getM3()+"\n"+vi.getKm()+"\n"+vi.getTotal()+"\n"+vi.getId_vehiculo());
-/*
-                viaje.add(vi);
-                DefaultTableModel tb = (DefaultTableModel) tbViajes.getModel();
-                tb.addRow(new Object[]{vi.getId_viaje(), vi.getPlaca(), vi.getFecha(), vi.getDia(), vi.getRecorrido(), vi.getUnidad(), vi.getValor_m3(), vi.getM3(), vi.getKm(), vi.getTotal(), vi.getId_vehiculo()});
-           */
+                DefaultTableModel tb = (DefaultTableModel) tbViajesFecha.getModel();
+                tb.addRow(new Object[]{vi.getId_viaje(), vi.getFecha(), vi.getPlaca(), vi.getDia(), vi.getRecorrido(), vi.getUnidad(), vi.getValor_m3(), vi.getM3(), vi.getKm(), vi.getTotal(), vi.getId_vehiculo()});
+              
             }
             cn.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "ERROR EN BUSQUEDA_1: " + e.getMessage());
         }
     }
-
-    public void LimpiarViajesFechas() {
-        DefaultTableModel tb = (DefaultTableModel) tbViajes.getModel();
-        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
-            tb.removeRow(i);
-        }
-    }
-
+     */
+ /*
     public void listarDescuentosFechas() {
 
+        String placa = txtPlaca.getText();
+        System.out.println(placa);
+        
         String formato = txtFechaInicio.getDateFormatString();
         Date date = txtFechaInicio.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat(formato);
         String datoIni = String.valueOf(sdf.format(date));
         //vi.setFecha(dato);
 
-        String formato2 = txtFechaFinal.getDateFormatString();
-        Date date2 = txtFechaFinal.getDate();
-        SimpleDateFormat sdf2 = new SimpleDateFormat(formato2);
-        String datoFin = String.valueOf(sdf2.format(date2));
+        String format = txtFechaFinal.getDateFormatString();
+        Date dat = txtFechaFinal.getDate();
+        SimpleDateFormat sd = new SimpleDateFormat(format);
+        String datoFin = String.valueOf(sd.format(dat));
         //vi.setFecha(dato);
 
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            PreparedStatement pst = cn.prepareStatement("SELECT * FROM descuentos WHERE fecha BETWEEN ? AND ? ORDER BY fecha ASC");
-            pst.setString(1, datoIni);
-            pst.setString(2, datoFin);
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM descuentos WHERE placa = ? AND fecha BETWEEN ? AND ? ORDER BY fecha ASC");
+            pst.setString(1, placa);
+            pst.setString(2, datoIni);
+            pst.setString(3, datoFin);
             ResultSet rs = pst.executeQuery();
             LimpiarDescuentosFechas();
             while (rs.next()) {
                 descuentos des = new descuentos();
                 des.setId_descuento(rs.getInt("id_descuento"));
+                des.setPlaca(rs.getString("placa").trim());
                 des.setFecha(rs.getString("fecha").trim());
                 des.setDescripcion(rs.getString("descripcion").trim());
                 des.setUnidad(rs.getInt("unidad"));
                 des.setPrecio(rs.getInt("precio"));
                 des.setTotal(rs.getInt("total"));
-                descuento.add(des);
-                DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
-                tb.addRow(new Object[]{des.getId_descuento(), des.getFecha(), des.getDescripcion(), des.getUnidad(), des.getPrecio(), des.getTotal()});
+                des.setId_vehiculo(rs.getInt("id_vehiculo"));
+                descu.add(des);
+                DefaultTableModel tb = (DefaultTableModel) tbDescuentoss.getModel();
+                tb.addRow(new Object[]{des.getId_descuento(), des.getPlaca(), des.getFecha(), des.getDescripcion(), des.getUnidad(), des.getPrecio(), des.getTotal(), des.getId_vehiculo()});
                 //autoCompleteEntradas();
             }
             cn.close();
@@ -252,14 +312,7 @@ public final class Liquidacion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR EN BUSQUEDA_2: " + e.getMessage());
         }
     }
-
-    public void LimpiarDescuentosFechas() {
-        DefaultTableModel tb = (DefaultTableModel) tbDescuentos.getModel();
-        for (int i = tb.getRowCount() - 1; i >= 0; i--) {
-            tb.removeRow(i);
-        }
-    }
-
+     */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -279,8 +332,6 @@ public final class Liquidacion extends javax.swing.JFrame {
         lblNit8 = new javax.swing.JLabel();
         txtFechaFinal = new com.toedter.calendar.JDateChooser();
         jButton4 = new javax.swing.JButton();
-        txtFec1 = new javax.swing.JTextField();
-        txtFec2 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         txtSubTotal = new javax.swing.JTextField();
         lblNit3 = new javax.swing.JLabel();
@@ -292,10 +343,10 @@ public final class Liquidacion extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         lblNit4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbDescuentos = new javax.swing.JTable();
+        tbDescuentoss = new javax.swing.JTable();
         lblNit6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbViajes = new javax.swing.JTable();
+        tbViajesFecha = new javax.swing.JTable();
         lblNit10 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         txtConductor = new javax.swing.JTextField();
@@ -313,6 +364,7 @@ public final class Liquidacion extends javax.swing.JFrame {
         txtFecha = new com.toedter.calendar.JDateChooser();
         lblNit7 = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -376,11 +428,7 @@ public final class Liquidacion extends javax.swing.JFrame {
             }
         });
         jPanel4.add(jButton4);
-        jButton4.setBounds(240, 10, 50, 40);
-        jPanel4.add(txtFec1);
-        txtFec1.setBounds(180, 60, 110, 30);
-        jPanel4.add(txtFec2);
-        txtFec2.setBounds(180, 90, 110, 30);
+        jButton4.setBounds(190, 30, 100, 40);
 
         jPanel3.add(jPanel4);
         jPanel4.setBounds(520, 150, 310, 130);
@@ -429,8 +477,8 @@ public final class Liquidacion extends javax.swing.JFrame {
         jPanel3.add(jPanel6);
         jPanel6.setBounds(20, 70, 480, 70);
 
-        tbDescuentos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102), 3));
-        tbDescuentos.setModel(new javax.swing.table.DefaultTableModel(
+        tbDescuentoss.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102), 2));
+        tbDescuentoss.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -439,15 +487,15 @@ public final class Liquidacion extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true, true, true, true, false
+                false, true, true, true, true, true, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tbDescuentos.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane1.setViewportView(tbDescuentos);
+        tbDescuentoss.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane1.setViewportView(tbDescuentoss);
 
         jPanel3.add(jScrollPane1);
         jScrollPane1.setBounds(20, 540, 550, 180);
@@ -458,25 +506,25 @@ public final class Liquidacion extends javax.swing.JFrame {
         jPanel3.add(lblNit6);
         lblNit6.setBounds(20, 520, 140, 20);
 
-        tbViajes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102), 3));
-        tbViajes.setModel(new javax.swing.table.DefaultTableModel(
+        tbViajesFecha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102), 2));
+        tbViajesFecha.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID_VIAJE", "PLACA", "FECHA", "DIA", "RECORRIDO", "UNIDAD", "VALOR M3", "M3", "KM RECORRIDO", "TOTAL", "ID_VEHICULO"
+                "ID_VIAJE", "FECHA", "PLACA", "DIA", "RECORRIDO", "UNIDAD", "VALOR M3", "M3", "KM RECORRIDO", "TOTAL", "ID_VEHICULO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true, true, true, true, true
+                false, true, true, true, true, true, true, true, true, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tbViajes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane2.setViewportView(tbViajes);
+        tbViajesFecha.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane2.setViewportView(tbViajesFecha);
 
         jPanel3.add(jScrollPane2);
         jScrollPane2.setBounds(20, 300, 810, 220);
@@ -582,6 +630,16 @@ public final class Liquidacion extends javax.swing.JFrame {
         jPanel3.add(txtNumero);
         txtNumero.setBounds(690, 20, 140, 30);
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton2.setText("+");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton2);
+        jButton2.setBounds(20, 730, 80, 30);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -644,10 +702,16 @@ public final class Liquidacion extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-        LimpiarViajesFechas();
-        listarViajesFechas();
+        LimpiarVia();
+        listarVia();
+        LimpiarDescuentosFechas();
+        listarDescuentosFechas();
 
         /*
+        LimpiarDescuentosFechas();
+        listarDescuentosFechas();
+         */
+ /*
         try {
             LimpiarViajesFechas();
             listarViajesFechas();
@@ -662,11 +726,6 @@ public final class Liquidacion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtConductorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConductorKeyTyped
-
-        char c = evt.getKeyChar();
-        if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z')) {
-            evt.consume();
-        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_txtConductorKeyTyped
@@ -706,6 +765,30 @@ public final class Liquidacion extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        txtSubTotal.setText("0");
+        int ta = tbViajesFecha.getRowCount();
+        int c = 0;
+
+        try {
+            int f=c++;
+            int num1 = Integer.parseInt(tbViajesFecha.getValueAt(f, 9).toString());
+            String dato = txtSubTotal.getText();
+            int num2 = Integer.parseInt(dato);
+            
+            long resultado = num1+num2;
+            txtSubTotal.setText(String.valueOf(resultado));
+            do {
+
+            } while (rootPaneCheckingEnabled);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -748,6 +831,7 @@ public final class Liquidacion extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnLiquidar;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -772,12 +856,10 @@ public final class Liquidacion extends javax.swing.JFrame {
     private javax.swing.JLabel lblNit7;
     private javax.swing.JLabel lblNit8;
     private javax.swing.JLabel lblNit9;
-    private javax.swing.JTable tbDescuentos;
-    private javax.swing.JTable tbViajes;
+    private javax.swing.JTable tbDescuentoss;
+    private javax.swing.JTable tbViajesFecha;
     private javax.swing.JTextField txtConductor;
     private javax.swing.JTextField txtDescuentos;
-    private javax.swing.JTextField txtFec1;
-    private javax.swing.JTextField txtFec2;
     private com.toedter.calendar.JDateChooser txtFecha;
     private com.toedter.calendar.JDateChooser txtFechaFinal;
     private com.toedter.calendar.JDateChooser txtFechaInicio;

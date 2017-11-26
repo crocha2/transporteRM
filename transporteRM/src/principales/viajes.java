@@ -26,6 +26,7 @@ public class viajes {
     public viajes() {
     }
 
+    /*
     public viajes(int id_viaje, String placa, String fecha, String dia, String recorrido, int unidad, int valor_m3, int m3, int km, int total, int id_vehiculo) {
         this.id_viaje = id_viaje;
         this.placa = placa;
@@ -39,6 +40,7 @@ public class viajes {
         this.total = total;
         this.id_vehiculo = id_vehiculo;
     }
+    */
 
     public int getId_viaje() {
         return id_viaje;

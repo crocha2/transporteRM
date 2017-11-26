@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import principales.clientes;
 import principales.descuentos;
 import principales.liquidaciones;
@@ -29,69 +30,73 @@ import principales.viajes;
  */
 public class LiquidacionesMysql {
     
-    public ArrayList<viajes> ListViajesFechas(String fecha_ini, String fecha_fin) {
-        ArrayList<viajes> viaje = new ArrayList();
+    public ArrayList<viajes> ListViajesFechas(String placa, String fecha_ini, String fecha_fin) {
+        ArrayList<viajes> viajeFecha = new ArrayList();
         try {
-            String fecha1 = fecha_ini;
-            String fecha2 = fecha_fin;
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            PreparedStatement pst = cn.prepareStatement("SELECT * FROM viajes WHERE fecha BETWEEN ? AND ? ORDER BY fecha ASC");
-            pst.setString(1, fecha1);
-            pst.setString(2, fecha2);
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM viajes WHERE placa = ? AND fecha BETWEEN ? AND ? ORDER BY fecha ASC");
+            pst.setString(1, placa);
+            pst.setString(2, fecha_ini);
+            pst.setString(3, fecha_fin);
             ResultSet rs = pst.executeQuery();
+            
             while (rs.next()) {
-                viajes vi = new  viajes();
-                vi.setId_viaje(rs.getInt("id_viaje"));
-                vi.setPlaca(rs.getString("placa"));
-                vi.setFecha(rs.getString("fecha"));
-                vi.setDia(rs.getString("dia"));
-                vi.setRecorrido(rs.getString("recorrido"));
-                vi.setUnidad(rs.getInt("unidad"));
-                vi.setValor_m3(rs.getInt("valor_m3"));
-                vi.setM3(rs.getInt("m3"));
-                vi.setKm(rs.getInt("km"));
-                vi.setTotal(rs.getInt("total"));
-                vi.setId_vehiculo(rs.getInt("id_vehiculo"));
-                viaje.add(vi);
+                viajes v= new viajes();
+                v.setId_viaje(rs.getInt("id_viaje"));
+                v.setFecha(rs.getString("fecha"));
+                v.setPlaca(rs.getString("placa"));
+                v.setDia(rs.getString("dia"));
+                v.setRecorrido(rs.getString("recorrido"));
+                v.setUnidad(rs.getInt("unidad"));
+                v.setValor_m3(rs.getInt("valor_m3"));
+                v.setM3(rs.getInt("m3"));
+                v.setKm(rs.getInt("km"));
+                v.setTotal(rs.getInt("total"));
+                v.setId_vehiculo(rs.getInt("id_vehiculo"));
+                viajeFecha.add(v);
             }
             cn.close();
             st.close();
             rs.close();
-        } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "Error al listar:\n"+ex.getMessage());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR EN BUSQUEDA_1: " + e.getMessage());
         }
-        return viaje;
+        
+        return viajeFecha;
     }
     
-    public ArrayList<descuentos> ListDescuentosFechas(String fecha_ini, String fecha_fin) {
-        ArrayList<descuentos> descuento = new ArrayList();
+    public ArrayList<descuentos> ListDescuentosFechas(String placa, String fecha_ini, String fecha_fin) {
+        ArrayList<descuentos> descu = new ArrayList();
         try {
-            String fecha1 = fecha_ini;
-            String fecha2 = fecha_fin;
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
             Statement st = cn.createStatement();
-            PreparedStatement pst = cn.prepareStatement("SELECT * FROM descuentos WHERE fecha BETWEEN ? AND ? ORDER BY fecha ASC");
-            pst.setString(1, fecha1);
-            pst.setString(2, fecha2);
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM descuentos WHERE placa = ? AND fecha BETWEEN ? AND ? ORDER BY fecha ASC");
+            pst.setString(1, placa);
+            pst.setString(2, fecha_ini);
+            pst.setString(3, fecha_fin);
             ResultSet rs = pst.executeQuery();
+            
             while (rs.next()) {
-                descuentos des = new  descuentos();
+                descuentos des = new descuentos();
                 des.setId_descuento(rs.getInt("id_descuento"));
+                des.setPlaca(rs.getString("placa").trim());
                 des.setFecha(rs.getString("fecha").trim());
                 des.setDescripcion(rs.getString("descripcion").trim());
                 des.setUnidad(rs.getInt("unidad"));
                 des.setPrecio(rs.getInt("precio"));
                 des.setTotal(rs.getInt("total"));
-                descuento.add(des);
+                des.setId_vehiculo(rs.getInt("id_vehiculo"));
+                descu.add(des);
             }
             cn.close();
             st.close();
             rs.close();
-        } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "Error al listar:\n"+ex.getMessage());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR EN BUSQUEDA_1: " + e.getMessage());
         }
-        return descuento; 
+        
+        return descu; 
     }
     
     
