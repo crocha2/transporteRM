@@ -12,9 +12,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -58,6 +60,9 @@ public class Liquidacion extends javax.swing.JFrame {
         txtIdConductor.setEnabled(false);
         txtIdVehiculo.setEnabled(false);
         txtConductor.setEnabled(false);
+        txtSubTotal.setEnabled(false);
+        txtDescuentos.setEnabled(false);
+        txtGranTotal.setEnabled(false);
     }
 
     public void autoCompleteConductor() {
@@ -435,6 +440,8 @@ public class Liquidacion extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
         jPanel5.setLayout(null);
+
+        txtSubTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel5.add(txtSubTotal);
         txtSubTotal.setBounds(10, 10, 140, 30);
 
@@ -443,6 +450,8 @@ public class Liquidacion extends javax.swing.JFrame {
         lblNit3.setText("SUB-TOTAL");
         jPanel5.add(lblNit3);
         lblNit3.setBounds(160, 10, 80, 14);
+
+        txtDescuentos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel5.add(txtDescuentos);
         txtDescuentos.setBounds(10, 50, 140, 30);
 
@@ -451,8 +460,10 @@ public class Liquidacion extends javax.swing.JFrame {
         lblNit9.setText("DESCUENTOS");
         jPanel5.add(lblNit9);
         lblNit9.setBounds(160, 50, 80, 14);
+
+        txtGranTotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jPanel5.add(txtGranTotal);
-        txtGranTotal.setBounds(10, 90, 140, 30);
+        txtGranTotal.setBounds(10, 110, 230, 30);
 
         lblNit12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit12.setForeground(new java.awt.Color(0, 51, 102));
@@ -461,7 +472,7 @@ public class Liquidacion extends javax.swing.JFrame {
         lblNit12.setBounds(160, 90, 80, 14);
 
         jPanel3.add(jPanel5);
-        jPanel5.setBounds(580, 540, 250, 130);
+        jPanel5.setBounds(580, 540, 250, 160);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 51, 102)));
         jPanel6.setLayout(null);
@@ -544,15 +555,15 @@ public class Liquidacion extends javax.swing.JFrame {
             }
         });
         jPanel8.add(txtConductor);
-        txtConductor.setBounds(10, 90, 300, 30);
+        txtConductor.setBounds(20, 90, 290, 30);
 
         lblNit5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblNit5.setForeground(new java.awt.Color(0, 51, 102));
         lblNit5.setText("CONDUCTOR");
         jPanel8.add(lblNit5);
-        lblNit5.setBounds(10, 70, 100, 14);
+        lblNit5.setBounds(20, 70, 100, 14);
         jPanel8.add(txtPlaca);
-        txtPlaca.setBounds(10, 30, 300, 30);
+        txtPlaca.setBounds(20, 30, 290, 30);
         jPanel8.add(txtIdVehiculo);
         txtIdVehiculo.setBounds(400, 30, 60, 30);
         jPanel8.add(txtIdConductor);
@@ -562,7 +573,7 @@ public class Liquidacion extends javax.swing.JFrame {
         lblNit11.setForeground(new java.awt.Color(0, 51, 102));
         lblNit11.setText("PLACA");
         jPanel8.add(lblNit11);
-        lblNit11.setBounds(10, 10, 100, 14);
+        lblNit11.setBounds(20, 10, 100, 14);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jButton1.setText(">>");
@@ -592,7 +603,7 @@ public class Liquidacion extends javax.swing.JFrame {
             }
         });
         jPanel3.add(btnLiquidar);
-        btnLiquidar.setBounds(580, 680, 250, 90);
+        btnLiquidar.setBounds(580, 710, 250, 60);
 
         btnEditar.setBackground(new java.awt.Color(0, 51, 102));
         btnEditar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -693,6 +704,9 @@ public class Liquidacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnLiquidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiquidarActionPerformed
+
+        
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLiquidarActionPerformed
 
@@ -701,7 +715,7 @@ public class Liquidacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+        
         LimpiarVia();
         listarVia();
         LimpiarDescuentosFechas();
@@ -768,6 +782,7 @@ public class Liquidacion extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
+        /*
         txtSubTotal.setText("0");
         int ta = tbViajesFecha.getRowCount();
         int c = 0;
@@ -786,6 +801,86 @@ public class Liquidacion extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, e);
         }
+         */
+        txtSubTotal.setText("0");
+        txtDescuentos.setText("0");
+        txtGranTotal.setText("0");
+        int ta = tbViajesFecha.getRowCount();
+        System.out.println("filas: " + ta);
+        int c = 0;
+
+        do {
+            try {
+                int f = c++;
+                int num1 = Integer.parseInt(tbViajesFecha.getValueAt(f, 9).toString());
+                String dato = txtSubTotal.getText();
+                int num2 = Integer.parseInt(dato);
+
+                int resultado = num1 + num2;
+                //int subTo = resultado*0.95;
+
+                txtSubTotal.setDisabledTextColor(java.awt.Color.RED);
+                txtSubTotal.setText(String.valueOf(resultado));
+                /*
+                double iva = (resultado + fletes) * 0.19;
+                txtIva.setDisabledTextColor(java.awt.Color.RED);
+                txtIva.setText(String.valueOf(iva));
+
+                
+
+                double granTotal = resultado + fletes + iva;
+                //numero en formato monetario...
+                Locale locale = new Locale("es", "AR");
+                NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+
+                txtGranTotal.setDisabledTextColor(java.awt.Color.RED);
+                txtGranTotal.setText(nf.format(granTotal));
+                //txtGranTotal.setDisabledTextColor(java.awt.Color.RED);
+                //txtGranTotal.setText(String.valueOf(granTotal));
+                 */
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, e.getLocalizedMessage());
+            }
+        } while (c < ta);
+
+        int tab = tbDescuentoss.getRowCount();
+        System.out.println("filas: " + ta);
+        int b = 0;
+        do {
+            try {
+                int f = b++;
+                int num1 = Integer.parseInt(tbDescuentoss.getValueAt(f, 6).toString());
+                String dato = txtDescuentos.getText();
+                int num2 = Integer.parseInt(dato);
+
+                int descuento = num1 + num2;
+                txtDescuentos.setDisabledTextColor(java.awt.Color.RED);
+                txtDescuentos.setText(String.valueOf(descuento));
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, e.getLocalizedMessage());
+            }
+        } while (b < tab);
+
+        int sub = Integer.parseInt(txtSubTotal.getText());
+        int des = Integer.parseInt(txtDescuentos.getText());
+
+        int GranTotal = sub - des;
+        Locale locale = new Locale("es", "AR");
+        NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
+        txtGranTotal.setDisabledTextColor(java.awt.Color.RED);
+        txtGranTotal.setText(nf.format(GranTotal));
+        //txtGranTotal.setDisabledTextColor(java.awt.Color.RED);
+        //txtGranTotal.setText(String.valueOf(GranTotal));
+        Locale locale2 = new Locale("es", "AR");
+        NumberFormat nf2 = NumberFormat.getCurrencyInstance(locale2);
+        txtDescuentos.setDisabledTextColor(java.awt.Color.RED);
+        txtDescuentos.setText(nf2.format(des));
+        
+        Locale locale3 = new Locale("es", "AR");
+        NumberFormat nf3 = NumberFormat.getCurrencyInstance(locale3);
+        txtSubTotal.setDisabledTextColor(java.awt.Color.RED);
+        txtSubTotal.setText(nf2.format(sub));
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed

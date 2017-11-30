@@ -100,19 +100,22 @@ public class LiquidacionesMysql {
     }
     
     
-    public void insertarPropietario(propietarios propietario) {
+    public void insertarLiquidacion(liquidaciones liq) {
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/transporterm", "root", "Colombia_16");
-            PreparedStatement pst = cn.prepareStatement("INSERT INTO propietarios(identificacion, nombre_propietario, departamento, municipio, direccion, fecha_ingreso, email, telefono, estado) VALUES (?,?,?,?,?,?,?,?,?)");
-            pst.setString(1, propietario.getIdentificacion());
-            pst.setString(2, propietario.getNombre_propietario());
-            pst.setString(3, propietario.getDepartamento());
-            pst.setString(4, propietario.getMunicipio());
-            pst.setString(5, propietario.getDireccion());
-            pst.setString(6, propietario.getFecha_ingreso());
-            pst.setString(7, propietario.getEmail());
-            pst.setString(8, propietario.getTelefono());
-            pst.setString(9, propietario.getEstado());
+            PreparedStatement pst = cn.prepareStatement("INSERT INTO liquidaciones(numero, nombre, conductor, placa, fecha, fecha_inicio, fecha_fin, sub_total, descuentos, gran_total, id_cliente, id_vehiculo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+            pst.setString(1, liq.getNumero());
+            pst.setString(2, liq.getNombre());
+            pst.setString(3, liq.getConductor());
+            pst.setString(4, liq.getPlaca());
+            pst.setString(5, liq.getFecha());
+            pst.setString(6, liq.getFecha_inicio());
+            pst.setString(7, liq.getFecha_fin());
+            pst.setString(8, liq.getSub_total());
+            pst.setString(9, liq.getDescuentos());
+            pst.setString(10, liq.getGran_total());
+            pst.setInt(11, liq.getId_cliente());
+            pst.setInt(12, liq.getId_vehiculo());
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Guardado exitosamente");
             cn.close();

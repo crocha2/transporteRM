@@ -19,18 +19,17 @@ public class liquidaciones {
     String fecha;
     String fecha_inicio;
     String fecha_fin;
-    int sub_total;
-    int gran_total;
-    int id_desciento;
+    String sub_total;
+    String descuentos;
+    String gran_total;
     int id_cliente;
-    int id_viaje;
     int id_vehiculo;
-    String estado;
+
 
     public liquidaciones() {
     }
 
-    public liquidaciones(int id_liquidacion, String numero, String nombre, String conductor, String placa, String fecha, String fecha_inicio, String fecha_fin, int sub_total, int gran_total, int id_desciento, int id_cliente, int id_viaje, int id_vehiculo, String estado) {
+    public liquidaciones(int id_liquidacion, String numero, String nombre, String conductor, String placa, String fecha, String fecha_inicio, String fecha_fin, String sub_total, String descuentos, String gran_total, int id_cliente, int id_vehiculo) {
         this.id_liquidacion = id_liquidacion;
         this.numero = numero;
         this.nombre = nombre;
@@ -40,12 +39,10 @@ public class liquidaciones {
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
         this.sub_total = sub_total;
+        this.descuentos = descuentos;
         this.gran_total = gran_total;
-        this.id_desciento = id_desciento;
         this.id_cliente = id_cliente;
-        this.id_viaje = id_viaje;
         this.id_vehiculo = id_vehiculo;
-        this.estado = estado;
     }
 
     public int getId_liquidacion() {
@@ -112,28 +109,28 @@ public class liquidaciones {
         this.fecha_fin = fecha_fin;
     }
 
-    public int getSub_total() {
+    public String getSub_total() {
         return sub_total;
     }
 
-    public void setSub_total(int sub_total) {
+    public void setSub_total(String sub_total) {
         this.sub_total = sub_total;
     }
 
-    public int getGran_total() {
+    public String getDescuentos() {
+        return descuentos;
+    }
+
+    public void setDescuentos(String descuentos) {
+        this.descuentos = descuentos;
+    }
+
+    public String getGran_total() {
         return gran_total;
     }
 
-    public void setGran_total(int gran_total) {
+    public void setGran_total(String gran_total) {
         this.gran_total = gran_total;
-    }
-
-    public int getId_desciento() {
-        return id_desciento;
-    }
-
-    public void setId_desciento(int id_desciento) {
-        this.id_desciento = id_desciento;
     }
 
     public int getId_cliente() {
@@ -144,14 +141,6 @@ public class liquidaciones {
         this.id_cliente = id_cliente;
     }
 
-    public int getId_viaje() {
-        return id_viaje;
-    }
-
-    public void setId_viaje(int id_viaje) {
-        this.id_viaje = id_viaje;
-    }
-
     public int getId_vehiculo() {
         return id_vehiculo;
     }
@@ -160,14 +149,6 @@ public class liquidaciones {
         this.id_vehiculo = id_vehiculo;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     
-   
+    
 }
